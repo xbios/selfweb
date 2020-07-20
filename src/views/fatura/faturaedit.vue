@@ -89,8 +89,10 @@
         </b-button>
       </div>
     </div>
-    <!--  -->
-    <!--  -->
+    <!-- Begin detay Table -->
+    <faturadetayList />
+
+    <!-- End detay Table -->
   </div>
 </template>
 
@@ -98,11 +100,13 @@
 import flatPickr from "vue-flatpickr-component";
 import { mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
+import faturadetayList from "@/views/fatura/faturadetayList.vue";
 
 export default {
   // name: "faturaedit",
   components: {
-    flatPickr
+    flatPickr,
+    faturadetayList
   },
   data() {
     return {

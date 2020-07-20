@@ -32,6 +32,7 @@ export default new Vuex.Store({
     fatmastEdit: "",
 
     faturaList: [],
+    fatdetList: [],
 
     vergidLerFind: [],
     vergidLer: [],
@@ -138,6 +139,9 @@ export default new Vuex.Store({
     },
     actSetfaturaList(context, fatlist) {
       context.commit("SET_FATLIST", fatlist);
+    },
+    actSetfatdetList(context, fatdetlist) {
+      context.commit("SET_FATDETLIST", fatdetlist);
     }
   },
   mutations: {
@@ -167,6 +171,9 @@ export default new Vuex.Store({
     },
     SET_FATLIST(state, fatlist) {
       state.faturaList = fatlist;
+    },
+    SET_FATDETLIST(state, fatdetlist) {
+      state.fatdetList = fatdetlist;
     },
 
     // Sets the layout, useful for setting different layouts (under layouts/variations/)

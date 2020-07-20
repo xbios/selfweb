@@ -194,6 +194,8 @@ export default {
     faturaModal(_ID) {
       let _frID = this.$session.get("FRID");
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
+
+      ///fatmast
       this.$resource("getSfatmastID.php")
         .get({ FRID: _frID, Apikey: _Apikey, SFATMASTID: _ID })
         .then(response => {
@@ -203,6 +205,14 @@ export default {
           if (_ID <= 0) {
             this.KAYITDATE = "2020-01-01";
           }
+        });
+
+      //fatdet
+      this.$resource("getSfatdetList.php")
+        .get({ FRID: _frID, Apikey: _Apikey, FTID: _ID })
+        .then(response => {
+          let _fatdetList = response.body.data;
+          this.$store.dispatch("actSetfatdetList", _fatdetList);
         });
     }
   },
