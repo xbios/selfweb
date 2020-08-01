@@ -17,6 +17,15 @@
         <!-- <div class="form-row"></div> -->
         <form class="form-row">
           <div class="col-md-4 mb-4">
+            <label class="text-primary">Fatura Türü</label>
+            <b-form-select
+              id="example-select"
+              v-model="fatmastEdit.FTTUR"
+              :options="FaturaTuru"
+              plain
+            ></b-form-select>
+          </div>
+          <div class="col-md-4 mb-4">
             <label class="text-primary" for="FTBELNO">Belge No</label>
             <input
               class="form-control"
@@ -36,15 +45,6 @@
               v-model="fatmastEdit.FTTARIH"
             ></flat-pickr>
           </div>
-          <div class="col-md-4 mb-4">
-            <label class="text-primary">Fatura Türü</label>
-            <b-form-select
-              id="example-select"
-              v-model="fatmastEdit.FTTUR"
-              :options="FaturaTuru"
-              plain
-            ></b-form-select>
-          </div>
 
           <!-- <div class="col-md-4 mb-4">
             <label class="text-primary" for="CRKOD">Cari Kod</label>
@@ -56,16 +56,45 @@
               v-model="CRKOD"
             />
           </div>-->
-          <!-- <div class="col-md-8 mb-4">
-            <label class="text-primary" for="CRISIM">Cari Ünvan</label>
+          <div class="col-md-8 mb-4">
+            <label class="text-primary">Cari Ünvan</label>
+            <b-form-select id="example-select" v-model="fatmastEdit.FTCRID" :options="scari" plain></b-form-select>
+          </div>
+
+          <div class="form-check form-check-inline">
             <input
-              class="form-control"
-              id="CRISIM"
-              placeholder="Cari Ünvan"
-              type="text"
-              v-model="CRISIM"
+              class="form-check-input"
+              type="checkbox"
+              id="FTACIK"
+              true-value="1"
+              false-value="0"
+              v-model="fatmastEdit.FTACIK"
             />
-          </div>-->
+            <label class="form-check-label" for="inlineCheckbox1">Kapalı</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="FTIPTAL"
+              true-value="1"
+              false-value="0"
+              v-model="fatmastEdit.FTIPTAL"
+            />
+            <label class="form-check-label" for="inlineCheckbox1">İptal</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="YAZ"
+              true-value="1"
+              false-value="0"
+              v-model="fatmastEdit.YAZ"
+            />
+            <label class="form-check-label" for="inlineCheckbox1">Yazıldı</label>
+          </div>
+
           <div class="col-md-12 mb-4">
             <label class="text-primary" for="FTTURACIKLAMA">Açıklama</label>
             <input
@@ -117,10 +146,23 @@ export default {
         Apikey: ""
       },
 
+      comboParam: {
+        Apikey: "",
+        FRID: "",
+        VALUE: "",
+        TEXT: "",
+        TABLE: "",
+        SECIM: ""
+      },
+      scari: [],
+
       sonuc: "",
       alertDiv: null,
       alertMessage: null
     };
+  },
+  created() {
+    this.getCari();
   },
   methods: {
     faturaKaydet() {
@@ -164,6 +206,23 @@ export default {
         .then(response => {
           let _faturaList = response.body.data;
           this.$store.dispatch("actSetfaturaList", _faturaList);
+        });
+    },
+    getCari() {
+      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
+      let _frID = this.$session.get("FRID");
+
+      this.comboParam.Apikey = _Apikey;
+      this.comboParam.FRID = _frID;
+      this.comboParam.VALUE = "CRID";
+      this.comboParam.TEXT = "CRISIM";
+      this.comboParam.TABLE = "scari";
+      this.comboParam.SECIM = "";
+
+      this.$resource("getValueText.php")
+        .get({ ...this.comboParam })
+        .then(response => {
+          this.scari = response.body.data;
         });
     }
   },

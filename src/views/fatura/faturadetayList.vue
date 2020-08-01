@@ -24,8 +24,8 @@
             <b-th>Birim</b-th>
             <b-th>KDV</b-th>
             <b-th>İndirim %</b-th>
-            <b-th>Fiyat</b-th>
-            <b-th>Tutar</b-th>
+            <b-th class="text-right">Fiyat</b-th>
+            <b-th class="text-right">Tutar</b-th>
 
             <b-th></b-th>
           </b-tr>
@@ -38,8 +38,8 @@
             <b-td>{{ fatura.FDBIRIM }}</b-td>
             <b-td>{{ fatura.FDKDV }}</b-td>
             <b-td>{{ fatura.FDINDIRIMYUZDE }}</b-td>
-            <b-td>{{ fatura.FDFIYAT }}</b-td>
-            <b-td>{{ fatura.FDTUTAR }}</b-td>
+            <b-td class="text-right">{{ fatura.FDFIYAT }}</b-td>
+            <b-td class="text-right">{{ fatura.FDTUTAR }}</b-td>
 
             <b-td class="text-center">
               <b-button
@@ -63,6 +63,20 @@
             </b-td>
           </b-tr>
         </b-tbody>
+
+        <b-tfoot class="bg-black-10">
+          <b-tr>
+            <b-th></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
+            <b-th class="text-right text-primary">{{formatPrice(_FIYATSUM)}}</b-th>
+            <b-th class="text-right text-primary">{{formatPrice(_TUTARSUM)}}</b-th>
+            <b-th></b-th>
+          </b-tr>
+        </b-tfoot>
       </b-table-simple>
     </base-block>
     <!-- END Full Table -->
@@ -78,16 +92,37 @@ export default {
     return {
       sonuc: "",
       alertDiv: null,
-      alertMessage: null
+      alertMessage: null,
     };
   },
-  methods: {},
+  methods: {
+    formatPrice(value) {
+      if (value > 0) {
+        let val = (value / 1).toFixed(2).replace(".", ",");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+    },
+  },
   computed: {
     ...mapFields([
       //
-      "fatdetList"
-    ])
-  }
+      "fatdetList",
+    ]),
+    _FIYATSUM: function () {
+      let sum = 0;
+      this.fatdetList.forEach(function (smm) {
+        sum += parseFloat(smm.FDFIYAT);
+      });
+      return sum;
+    },
+    _TUTARSUM: function () {
+      let sum = 0;
+      this.fatdetList.forEach(function (smm) {
+        sum += parseFloat(smm.FDTUTAR);
+      });
+      return sum;
+    },
+  },
 };
 </script>
 

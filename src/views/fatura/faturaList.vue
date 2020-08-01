@@ -76,19 +76,24 @@
         <b-table-simple responsive striped table-class="table-vcenter">
           <b-thead>
             <b-tr class="text-primary">
-              <b-th>Onaylı</b-th>
-              <b-th>İptal</b-th>
-              <b-th>Yaz</b-th>
-              <b-th>e-Ft</b-th>
-              <b-th>Cari Hesap</b-th>
-              <b-th>Tarih</b-th>
-              <b-th>No</b-th>
               <b-th>Tür</b-th>
+              <b-th>Belge No</b-th>
+              <b-th>Tarih</b-th>
+              <b-th>Cari Hesap</b-th>
+              <b-th>Tutar</b-th>
+              <b-th>Durum</b-th>
+              <b-th>İptal</b-th>
+              <b-th>Yazıldı</b-th>
               <b-th></b-th>
             </b-tr>
           </b-thead>
           <b-tbody>
             <b-tr v-for="fatura in faturaList" :key="fatura.SFATMASTID">
+              <b-td>{{ fatura.FTTUR2 }}</b-td>
+              <b-td>{{ fatura.FTBELNO }}</b-td>
+              <b-td>{{ fatura.FTTARIH }}</b-td>
+              <b-td>{{ fatura.CRISIM }}</b-td>
+              <b-td class="text-right">{{ fatura.FTTUTAR }}</b-td>
               <b-td>
                 <b-badge v-if="fatura.FTACIK==1" variant="success">{{ fatura.FTACIK2 }}</b-badge>
                 <b-badge v-else variant="warning">{{ fatura.FTACIK2 }}</b-badge>
@@ -99,11 +104,6 @@
               <b-td>
                 <b-badge variant="info">{{ fatura.YAZ2 }}</b-badge>
               </b-td>
-              <b-td>{{ fatura.CRADRES }}</b-td>
-              <b-td>{{ fatura.CRISIM }}</b-td>
-              <b-td>{{ fatura.FTTARIH }}</b-td>
-              <b-td>{{ fatura.FTBELNO }}</b-td>
-              <b-td>{{ fatura.FTTUR2 }}</b-td>
               <b-td class="text-center">
                 <b-button
                   size="sm"
@@ -146,11 +146,13 @@ import { mapFields } from "vuex-map-fields";
 //import flatPickr from "vue-flatpickr-component";
 import faturaedit from "@/views/fatura/faturaedit.vue";
 
+import apif from "@/views/fatura/api";
+
 export default {
   // name:,
   components: {
     // flatPickr,
-    faturaedit
+    faturaedit,
   },
   data() {
     return {
@@ -158,12 +160,13 @@ export default {
 
       fatmastParam: {
         FRID: "",
-        Apikey: ""
+        Apikey: "",
       },
 
       sonuc: "",
       alertDiv: null,
-      alertMessage: null
+      alertMessage: null,
+      products: [],
     };
   },
   created() {
@@ -171,25 +174,41 @@ export default {
   },
   methods: {
     getFaturaList() {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
+      //let _frID = this.$session.get("FRID");
+      //let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
 
-      this.fatmastParam.FRID = _frID;
-      this.fatmastParam.Apikey = _Apikey;
+      //this.fatmastParam.FRID = _frID;
+      //this.fatmastParam.Apikey = _Apikey;
       this.fatmastParam.FTBELNO = this.AramaParam.searchBelge;
 
       // CRSEHIR: this.searchCity,
       // CRTEL: this.searchTelephone,
       // CREMAIL: this.searchEmail
 
-      this.$resource("getSfatmastList.php")
-        .get({
-          ...this.fatmastParam
-        })
-        .then(response => {
-          let _faturaList = response.body.data;
-          this.$store.dispatch("actSetfaturaList", _faturaList);
-        });
+      // apif.getProducts((products) => {
+      //   // context.commit("SET_PRODUCTS", products);
+      //   // resolve();
+      //   console.log("getProducts: " + products[0].title);
+      // });
+
+      apif.getFatList({ ...this.fatmastParam }).then((_faturaList) => {
+        // handle the users.
+        this.$store.dispatch("actSetfaturaList", _faturaList.body.data);
+        //console.log("_faturaList: " + _faturaList);
+      });
+      // .catch((error) => {
+      //   // handle the errors.
+      //   console.log(error);
+      // });
+
+      // this.$resource("getSfatmastList.php")
+      //   .get({
+      //     ...this.fatmastParam,
+      //   })
+      //   .then((response) => {
+      //     let _faturaList = response.body.data;
+      //     this.$store.dispatch("actSetfaturaList", _faturaList);
+      //   });
     },
     faturaModal(_ID) {
       let _frID = this.$session.get("FRID");
@@ -198,7 +217,7 @@ export default {
       ///fatmast
       this.$resource("getSfatmastID.php")
         .get({ FRID: _frID, Apikey: _Apikey, SFATMASTID: _ID })
-        .then(response => {
+        .then((response) => {
           let _fatmastEdit = response.body.data[0];
           this.$store.dispatch("actSetFatmastEdit", _fatmastEdit);
 
@@ -210,11 +229,11 @@ export default {
       //fatdet
       this.$resource("getSfatdetList.php")
         .get({ FRID: _frID, Apikey: _Apikey, FTID: _ID })
-        .then(response => {
+        .then((response) => {
           let _fatdetList = response.body.data;
           this.$store.dispatch("actSetfatdetList", _fatdetList);
         });
-    }
+    },
   },
   computed: {
     ...mapState({
@@ -223,9 +242,9 @@ export default {
     ...mapFields([
       //
       "faturaList",
-      "AramaParam"
-    ])
-  }
+      "AramaParam",
+    ]),
+  },
 };
 </script>
 
