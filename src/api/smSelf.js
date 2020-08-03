@@ -13,6 +13,23 @@ import Vue from "vue";
 import store from "../store";
 
 export default {
+  //getTable
+  getTable(_tablename, _yontem, params) {
+    if (_tablename === "sfatmast") {
+      if (_yontem === "Liste")
+        this.getData(params, "getSfatmastList.php", "actSetfaturaList", _dizi);
+      if (_yontem === "Edit")
+        this.getData(params, "getSfatmastID.php", "actSetFatmastEdit", _object);
+      if (_yontem === "Kaydet") this.setData(params, "editSfatmast.php");
+    }
+
+    if (_tablename === "sfatdet") {
+      if (_yontem === "Liste")
+        this.getData(params, "getSfatdetList.php", "actSetfatdetList", _dizi);
+    }
+  },
+
+  //fatura modülü
   getFatList(params) {
     this.getData(params, "getSfatmastList.php", "actSetfaturaList", _dizi);
   },
@@ -24,6 +41,7 @@ export default {
     this.getData(params, "getSfatdetList.php", "actSetfatdetList", _dizi);
   },
 
+  //api vuex
   getData(params, _php, _act, _tur) {
     // Vue.resource("getSfatmastList.php")
     Vue.resource(_php)
@@ -31,8 +49,24 @@ export default {
         ...params
       })
       .then(response => {
-        if (_tur === _dizi) store.dispatch(_act, response.body.data);
-        if (_tur === _object) store.dispatch(_act, response.body.data[0]);
+        if (_act === "Kaydet") {
+          console.log("response.body: " + response.body);
+        } else {
+          if (_tur === _dizi) store.dispatch(_act, response.body.data);
+          if (_tur === _object) store.dispatch(_act, response.body.data[0]);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  setData(params, _php) {
+    Vue.resource(_php)
+      .get({
+        ...params
+      })
+      .then(response => {
+        console.log("response.body: " + response.body);
       })
       .catch(error => {
         console.log(error);

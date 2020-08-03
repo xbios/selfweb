@@ -172,7 +172,8 @@ export default {
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
 
-      resourceApi.getFatList({ ...this.firmaParam });
+      //resourceApi.getFatList({ ...this.firmaParam });
+      resourceApi.getTable("sfatmast", "Liste", { ...this.firmaParam });
     },
 
     faturaModal(_ID) {
