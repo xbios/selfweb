@@ -4,21 +4,23 @@ const _products = [
   { id: 3, title: "Charli XCX - Sucker CD", price: 19.99, inventory: 5 }
 ];
 
-const _frID = "1"; //this.$session.get("FRID");
-const _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
+//const firmaParams = store.getters.appfirmaParams;
 
 import Vue from "vue";
-//import VueResource from "vue-resource";
-//Vue.use(VueResource);
-//Vue.prototype.$resource = VueResource;
+import store from "../../store";
 
 export default {
   getFatList(params) {
-    params.FRID = _frID;
-    params.Apikey = _Apikey;
-    return Vue.resource("getSfatmastList.php").get({
-      ...params
-    });
+    Vue.resource("getSfatmastList.php")
+      .get({
+        ...params
+      })
+      .then(response => {
+        store.dispatch("actSetfaturaList", response.body.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
 
   /////// örnekler

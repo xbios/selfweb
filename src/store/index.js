@@ -47,6 +47,11 @@ export default new Vuex.Store({
       searchUser: ""
     },
 
+    firmaParam: {
+      FRID: "1",
+      Apikey: "8e86b685-88e6-11ea-943a-000c292fbb99"
+    },
+
     FaturaTuru: [
       { value: null, text: "Seçiniz" },
       { value: 0, text: "T.SATIŞ" },
@@ -100,6 +105,7 @@ export default new Vuex.Store({
   getters: {
     //
     getField,
+
     // Get App name
     appName: state => {
       return state.app.name;

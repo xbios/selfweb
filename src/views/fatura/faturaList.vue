@@ -158,15 +158,9 @@ export default {
     return {
       configCustom: { dateFormat: "Y-m-d" },
 
-      fatmastParam: {
-        FRID: "",
-        Apikey: "",
-      },
-
       sonuc: "",
       alertDiv: null,
       alertMessage: null,
-      products: [],
     };
   },
   created() {
@@ -174,42 +168,14 @@ export default {
   },
   methods: {
     getFaturaList() {
-      //let _frID = this.$session.get("FRID");
-      //let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
+      this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
+      this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
+      this.firmaParam.FTCRID = this.AramaParam.searchCari;
+      this.firmaParam.USERCODE = this.AramaParam.searchUser;
 
-      //this.fatmastParam.FRID = _frID;
-      //this.fatmastParam.Apikey = _Apikey;
-      this.fatmastParam.FTBELNO = this.AramaParam.searchBelge;
-
-      // CRSEHIR: this.searchCity,
-      // CRTEL: this.searchTelephone,
-      // CREMAIL: this.searchEmail
-
-      // apif.getProducts((products) => {
-      //   // context.commit("SET_PRODUCTS", products);
-      //   // resolve();
-      //   console.log("getProducts: " + products[0].title);
-      // });
-
-      apif.getFatList({ ...this.fatmastParam }).then((_faturaList) => {
-        // handle the users.
-        this.$store.dispatch("actSetfaturaList", _faturaList.body.data);
-        //console.log("_faturaList: " + _faturaList);
-      });
-      // .catch((error) => {
-      //   // handle the errors.
-      //   console.log(error);
-      // });
-
-      // this.$resource("getSfatmastList.php")
-      //   .get({
-      //     ...this.fatmastParam,
-      //   })
-      //   .then((response) => {
-      //     let _faturaList = response.body.data;
-      //     this.$store.dispatch("actSetfaturaList", _faturaList);
-      //   });
+      apif.getFatList({ ...this.firmaParam });
     },
+
     faturaModal(_ID) {
       let _frID = this.$session.get("FRID");
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
@@ -243,6 +209,7 @@ export default {
       //
       "faturaList",
       "AramaParam",
+      "firmaParam",
     ]),
   },
 };
