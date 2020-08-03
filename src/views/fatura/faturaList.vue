@@ -146,7 +146,7 @@ import { mapFields } from "vuex-map-fields";
 //import flatPickr from "vue-flatpickr-component";
 import faturaedit from "@/views/fatura/faturaedit.vue";
 
-import apif from "@/views/fatura/api";
+import resourceApi from "@/api/smSelf";
 
 export default {
   // name:,
@@ -157,7 +157,6 @@ export default {
   data() {
     return {
       configCustom: { dateFormat: "Y-m-d" },
-
       sonuc: "",
       alertDiv: null,
       alertMessage: null,
@@ -173,32 +172,17 @@ export default {
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
 
-      apif.getFatList({ ...this.firmaParam });
+      resourceApi.getFatList({ ...this.firmaParam });
     },
 
     faturaModal(_ID) {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-
-      ///fatmast
-      this.$resource("getSfatmastID.php")
-        .get({ FRID: _frID, Apikey: _Apikey, SFATMASTID: _ID })
-        .then((response) => {
-          let _fatmastEdit = response.body.data[0];
-          this.$store.dispatch("actSetFatmastEdit", _fatmastEdit);
-
-          if (_ID <= 0) {
-            this.KAYITDATE = "2020-01-01";
-          }
-        });
+      //fatmast
+      this.firmaParam.SFATMASTID = _ID;
+      resourceApi.getFatID({ ...this.firmaParam });
 
       //fatdet
-      this.$resource("getSfatdetList.php")
-        .get({ FRID: _frID, Apikey: _Apikey, FTID: _ID })
-        .then((response) => {
-          let _fatdetList = response.body.data;
-          this.$store.dispatch("actSetfatdetList", _fatdetList);
-        });
+      this.firmaParam.FTID = _ID;
+      resourceApi.getFatDetList({ ...this.firmaParam });
     },
   },
   computed: {

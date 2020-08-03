@@ -4,19 +4,35 @@ const _products = [
   { id: 3, title: "Charli XCX - Sucker CD", price: 19.99, inventory: 5 }
 ];
 
+const _dizi = 1;
+const _object = 0;
+
 //const firmaParams = store.getters.appfirmaParams;
 
 import Vue from "vue";
-import store from "../../store";
+import store from "../store";
 
 export default {
   getFatList(params) {
-    Vue.resource("getSfatmastList.php")
+    this.getData(params, "getSfatmastList.php", "actSetfaturaList", _dizi);
+  },
+  getFatID(params) {
+    this.getData(params, "getSfatmastID.php", "actSetFatmastEdit", _object);
+  },
+
+  getFatDetList(params) {
+    this.getData(params, "getSfatdetList.php", "actSetfatdetList", _dizi);
+  },
+
+  getData(params, _php, _act, _tur) {
+    // Vue.resource("getSfatmastList.php")
+    Vue.resource(_php)
       .get({
         ...params
       })
       .then(response => {
-        store.dispatch("actSetfaturaList", response.body.data);
+        if (_tur === _dizi) store.dispatch(_act, response.body.data);
+        if (_tur === _object) store.dispatch(_act, response.body.data[0]);
       })
       .catch(error => {
         console.log(error);
