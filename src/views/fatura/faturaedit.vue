@@ -131,100 +131,48 @@ import { mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
 import faturadetayList from "@/views/fatura/faturadetayList.vue";
 
+import resourceApi from "@/api/smSelf";
+
 export default {
   // name: "faturaedit",
   components: {
     flatPickr,
-    faturadetayList
+    faturadetayList,
   },
   data() {
     return {
       configCustom: { dateFormat: "Y-m-d" },
-
-      fatmastParam: {
-        FRID: "",
-        Apikey: ""
-      },
-
-      comboParam: {
-        Apikey: "",
-        FRID: "",
-        VALUE: "",
-        TEXT: "",
-        TABLE: "",
-        SECIM: ""
-      },
-      scari: [],
-
       sonuc: "",
       alertDiv: null,
-      alertMessage: null
+      alertMessage: null,
     };
   },
   created() {
     this.getCari();
   },
   methods: {
-    faturaKaydet() {
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      let _frID = this.$session.get("FRID");
-      let _UserID = this.$session.get("UID");
-
-      console.log("_frID: " + _frID);
-      console.log("_UserID: " + _UserID);
-      console.log("_Apikey: " + _Apikey);
-
-      this.fatmastEdit.FRID = _frID;
-      this.fatmastEdit.USERCODE = _UserID;
-      this.fatmastEdit.Apikey = _Apikey;
-
-      this.$resource("editSfatmast.php")
-        .get({
-          ...this.fatmastEdit
-        })
-        .then(response => {
-          this.sonuc = response.body;
-          this.alertDiv = true;
-          this.alertMessage = response.body[0]["SonucMesaj"];
-          this.getFaturaList();
-        });
+    async faturaKaydet() {
+      this.fatmastEdit.Apikey = this.editApikey;
+      this.fatmastEdit.USERCODE = this.editUserID;
+      await resourceApi.setTable("sfatmast", { ...this.fatmastEdit });
+      this.getFaturaList();
     },
-    getFaturaList() {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-
-      this.fatmastParam.FRID = _frID;
-      this.fatmastParam.Apikey = _Apikey;
-
-      if (this.AramaParam.searchBelge != "")
-        this.fatmastParam.FTBELNO = this.AramaParam.searchBelge;
-
-      this.$resource("getSfatmastList.php")
-        .get({
-          ...this.fatmastParam
-        })
-        .then(response => {
-          let _faturaList = response.body.data;
-          this.$store.dispatch("actSetfaturaList", _faturaList);
-        });
+    async getFaturaList() {
+      this.firmaParam.MUTNAME = "SET_FATLIST"; //mutation name
+      this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
+      this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
+      this.firmaParam.FTCRID = this.AramaParam.searchCari;
+      this.firmaParam.USERCODE = this.AramaParam.searchUser;
+      await resourceApi.getTable("sfatmast", "Liste", { ...this.firmaParam });
     },
-    getCari() {
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      let _frID = this.$session.get("FRID");
-
-      this.comboParam.Apikey = _Apikey;
-      this.comboParam.FRID = _frID;
+    async getCari() {
       this.comboParam.VALUE = "CRID";
       this.comboParam.TEXT = "CRISIM";
       this.comboParam.TABLE = "scari";
       this.comboParam.SECIM = "";
-
-      this.$resource("getValueText.php")
-        .get({ ...this.comboParam })
-        .then(response => {
-          this.scari = response.body.data;
-        });
-    }
+      this.comboParam.MUTNAME = "SET_CARI";
+      await resourceApi.getCombo("scari", { ...this.comboParam });
+    },
   },
   computed: {
     ...mapState({
@@ -233,10 +181,16 @@ export default {
     ...mapFields([
       //
       "fatmastEdit",
+      "AramaParam",
+      "firmaParam",
+      "comboParam",
+      "scari",
+      "editApikey",
+      "editFRID",
+      "editUserID",
       "FaturaTuru",
-      "AramaParam"
-    ])
-  }
+    ]),
+  },
 };
 </script>
 

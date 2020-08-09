@@ -40,6 +40,8 @@ export default new Vuex.Store({
     VergIL: null,
     VergILCE: null,
 
+    scari: [],
+
     AramaParam: {
       searchBelge: "",
       searchTarih: "",
@@ -47,9 +49,25 @@ export default new Vuex.Store({
       searchUser: ""
     },
 
+    editApikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
+    editFRID: "1",
+    editUserID: "999",
+
     firmaParam: {
       FRID: "1",
-      Apikey: "8e86b685-88e6-11ea-943a-000c292fbb99"
+      Apikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
+      UserID: "999",
+      MUTNAME: ""
+    },
+
+    comboParam: {
+      Apikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
+      FRID: "1",
+      VALUE: "",
+      TEXT: "",
+      TABLE: "",
+      SECIM: "",
+      MUTNAME: ""
     },
 
     FaturaTuru: [
@@ -140,18 +158,36 @@ export default new Vuex.Store({
     actSetStokEdit(context, stok) {
       context.commit("SET_STOKEDIT", stok);
     },
-    actSetFatmastEdit(context, fatmast) {
-      context.commit("SET_FATMASTEDIT", fatmast);
+    // actSetFatmastEdit(context, fatmast) {
+    //   context.commit("SET_FATMASTEDIT", fatmast);
+    // },
+    // actSetfaturaList(context, fatlist) {
+    //   context.commit("SET_FATLIST", fatlist);
+    // },
+    // actSetfatdetList(context, fatdetlist) {
+    //   context.commit("SET_FATDETLIST", fatdetlist);
+    // },
+
+    actSetData(context, respData) {
+      context.commit("SET_DATA", respData);
     },
-    actSetfaturaList(context, fatlist) {
-      context.commit("SET_FATLIST", fatlist);
-    },
-    actSetfatdetList(context, fatdetlist) {
-      context.commit("SET_FATDETLIST", fatdetlist);
+    actSetCombo(context, respData) {
+      context.commit("SET_COMBO", respData);
     }
   },
   mutations: {
     updateField,
+
+    SET_DATA(state, respData) {
+      const _mut = state.firmaParam.MUTNAME;
+      if (_mut === "SET_FATLIST") state.faturaList = respData;
+      if (_mut === "SET_FATMASTEDIT") state.fatmastEdit = respData;
+      if (_mut === "SET_FATDETLIST") state.fatdetList = respData;
+    },
+    SET_COMBO(state, respData) {
+      const _mut = state.comboParam.MUTNAME;
+      if (_mut === "SET_CARI") state.scari = respData;
+    },
 
     SET_VERGIDAIREFIND(state, vd) {
       state.vergidLerFind = vd;
@@ -172,15 +208,15 @@ export default new Vuex.Store({
     SET_STOKEDIT(state, stok) {
       state.stokEdit = stok;
     },
-    SET_FATMASTEDIT(state, fatmast) {
-      state.fatmastEdit = fatmast;
-    },
-    SET_FATLIST(state, fatlist) {
-      state.faturaList = fatlist;
-    },
-    SET_FATDETLIST(state, fatdetlist) {
-      state.fatdetList = fatdetlist;
-    },
+    // SET_FATMASTEDIT(state, fatmast) {
+    //   state.fatmastEdit = fatmast;
+    // },
+    // SET_FATLIST(state, fatlist) {
+    //   state.faturaList = fatlist;
+    // },
+    // SET_FATDETLIST(state, fatdetlist) {
+    //   state.fatdetList = fatdetlist;
+    // },
 
     // Sets the layout, useful for setting different layouts (under layouts/variations/)
     setLayout(state, payload) {

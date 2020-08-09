@@ -4,8 +4,7 @@ const _products = [
   { id: 3, title: "Charli XCX - Sucker CD", price: 19.99, inventory: 5 }
 ];
 
-const _dizi = 1;
-const _object = 0;
+let _php = "";
 
 //const firmaParams = store.getters.appfirmaParams;
 
@@ -13,67 +12,78 @@ import Vue from "vue";
 import store from "../store";
 
 export default {
-  //getTable
-  getTable(_tablename, _yontem, params) {
-    if (_tablename === "sfatmast") {
-      if (_yontem === "Liste")
-        this.getData(params, "getSfatmastList.php", "actSetfaturaList", _dizi);
-      if (_yontem === "Edit")
-        this.getData(params, "getSfatmastID.php", "actSetFatmastEdit", _object);
-      if (_yontem === "Kaydet") this.setData(params, "editSfatmast.php");
-    }
-
-    if (_tablename === "sfatdet") {
-      if (_yontem === "Liste")
-        this.getData(params, "getSfatdetList.php", "actSetfatdetList", _dizi);
-    }
+  //php
+  async getCombo(_tbl, params) {
+    await Vue.resource("getValueText.php")
+      .get({
+        ...params
+      })
+      .then(response => {
+        //console.log("resp: " + response.body.data);
+        store.dispatch("actSetCombo", response.body.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
 
-  //fatura modülü
-  getFatList(params) {
-    this.getData(params, "getSfatmastList.php", "actSetfaturaList", _dizi);
-  },
-  getFatID(params) {
-    this.getData(params, "getSfatmastID.php", "actSetFatmastEdit", _object);
+  //php
+  async getTable(_tbl, _ynt, params) {
+    //
+    if (_tbl === "sfatmast" && _ynt === "Liste") _php = "getSfatmastList.php";
+    if (_tbl === "sfatmast" && _ynt === "Edit") _php = "getSfatmastID.php";
+    //
+    if (_tbl === "sfatdet" && _ynt === "Liste") _php = "getSfatdetList.php";
+    ////
+    await this.getData(params, _php, _ynt);
   },
 
-  getFatDetList(params) {
-    this.getData(params, "getSfatdetList.php", "actSetfatdetList", _dizi);
+  //php
+  async setTable(_tbl, params) {
+    if (_tbl === "sfatmast") _php = "editSfatmast.php";
+    if (_tbl === "sfatdet") _php = "editSfatdet.php";
+    ////
+    await this.setData(params, _php);
   },
 
   //api vuex
-  getData(params, _php, _act, _tur) {
-    // Vue.resource("getSfatmastList.php")
-    Vue.resource(_php)
+  async getData(params, _php, _ynt) {
+    const _act = "actSetData";
+    //console.log("_act: " + _act);
+    await Vue.resource(_php)
       .get({
         ...params
       })
       .then(response => {
-        if (_act === "Kaydet") {
-          console.log("response.body: " + response.body);
-        } else {
-          if (_tur === _dizi) store.dispatch(_act, response.body.data);
-          if (_tur === _object) store.dispatch(_act, response.body.data[0]);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  },
-  setData(params, _php) {
-    Vue.resource(_php)
-      .get({
-        ...params
-      })
-      .then(response => {
-        console.log("response.body: " + response.body);
+        if (_ynt === "Liste") store.dispatch(_act, response.body.data);
+        if (_ynt === "Edit") store.dispatch(_act, response.body.data[0]);
       })
       .catch(error => {
         console.log(error);
       });
   },
 
-  /////// örnekler
+  //api
+  async setData(params, _php) {
+    await Vue.resource(_php)
+      .get({
+        ...params
+      })
+      .then(response => {
+        console.log("response.body: " + response.body[0].SonucKodu);
+        console.log("response.body: " + response.body[0].SonucMesaj);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+
+  ///////////////////////// ÖRNEKLER
+  getUser() {
+    let user = store.getters.app.name;
+    return user;
+  },
+
   getProducts(cb) {
     setTimeout(() => cb(_products), 1000);
   },

@@ -166,24 +166,26 @@ export default {
     this.getFaturaList();
   },
   methods: {
-    getFaturaList() {
+    async getFaturaList() {
+      //sfatmast
+      this.firmaParam.MUTNAME = "SET_FATLIST"; //mutation name
       this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
       this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
-
-      //resourceApi.getFatList({ ...this.firmaParam });
-      resourceApi.getTable("sfatmast", "Liste", { ...this.firmaParam });
+      await resourceApi.getTable("sfatmast", "Liste", { ...this.firmaParam });
     },
 
-    faturaModal(_ID) {
-      //fatmast
+    async faturaModal(_ID) {
+      //sfatmast
+      this.firmaParam.MUTNAME = "SET_FATMASTEDIT";
       this.firmaParam.SFATMASTID = _ID;
-      resourceApi.getFatID({ ...this.firmaParam });
+      await resourceApi.getTable("sfatmast", "Edit", { ...this.firmaParam });
 
-      //fatdet
+      //sfatdet
+      this.firmaParam.MUTNAME = "SET_FATDETLIST";
       this.firmaParam.FTID = _ID;
-      resourceApi.getFatDetList({ ...this.firmaParam });
+      await resourceApi.getTable("sfatdet", "Liste", { ...this.firmaParam });
     },
   },
   computed: {
