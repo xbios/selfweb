@@ -34,7 +34,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Aranan müşteriye ait ad bilgisi..."
-              v-model="searchName"
+              v-model="AramaParam.searchCari"
               @keyup.enter="getCariList()"
             />
           </div>
@@ -44,7 +44,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Aranan müşteriye ait mail bilgisi..."
-              v-model="searchEmail"
+              v-model="AramaParam.searchEmail"
               @keyup.enter="getCariList()"
             />
           </div>
@@ -54,7 +54,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Aranan müşteriye ait telefon bilgisi..."
-              v-model="searchTelephone"
+              v-model="AramaParam.searchTelephone"
               @keyup.enter="getCariList()"
             />
           </div>
@@ -64,7 +64,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Aranan müşteriye ait şehir bilgisi..."
-              v-model="searchCity"
+              v-model="AramaParam.searchCity"
               @keyup.enter="getCariList()"
             />
           </div>
@@ -76,6 +76,7 @@
         <b-table-simple responsive striped table-class="table-vcenter">
           <b-thead>
             <b-tr class="text-primary">
+              <b-th>Kod</b-th>
               <b-th>Müşteri Adı</b-th>
               <b-th>Vergi No / TC Kimlik</b-th>
               <b-th>Vergi Daire</b-th>
@@ -89,6 +90,7 @@
           </b-thead>
           <b-tbody>
             <b-tr v-for="cari in cariList" :key="cari.CRID">
+              <b-td>{{ cari.CRKOD }}</b-td>
               <b-td>{{ cari.CRISIM }}</b-td>
               <b-td>{{ cari.CRVERGNO }}</b-td>
               <b-td>{{ cari.CRVERGD }}</b-td>
@@ -295,13 +297,23 @@
           <div class="block-content font-size-sm">
             <div class="form-row">
               <div class="col-md-12 mb-4">
+                <label for="CRKOD" class="text-primary">Müşteri Kodu</label>
+                <input
+                  type="text"
+                  id="CRKOD"
+                  class="form-control"
+                  placeholder="Müşteri Kodu"
+                  v-model="cariEdit.CRKOD"
+                />
+              </div>
+              <div class="col-md-12 mb-4">
                 <label for="CRISIM" class="text-primary">Müşteri Adı</label>
                 <input
                   type="text"
                   id="CRISIM"
                   class="form-control"
                   placeholder="Müşteri adı"
-                  v-model="CRISIM"
+                  v-model="cariEdit.CRISIM"
                 />
               </div>
 
@@ -312,12 +324,12 @@
                   id="newCRADRES"
                   class="form-control"
                   placeholder="Adres"
-                  v-model="CRADRES"
+                  v-model="cariEdit.CRADRES"
                 />
               </div>
               <div class="col-md-6 mb-4">
                 <label class="text-primary">Şehir</label>
-                <select v-model="CRSEHIR" class="form-control" id="newCRSEHIR">
+                <select v-model="cariEdit.CRSEHIR" class="form-control" id="newCRSEHIR">
                   <option
                     v-for="sehir in sehirler"
                     v-bind:key="sehir.name"
@@ -334,7 +346,7 @@
                        :value="newCRILCE"
                        placeholder="İlçe"
                 @input="newCRILCE = $event.target.value" >-->
-                <select v-model="CRILCE" class="form-control" id="newCRILCE">
+                <select v-model="cariEdit.CRILCE" class="form-control" id="newCRILCE">
                   <option
                     v-for="ilce in ilceler"
                     v-bind:key="ilce.name"
@@ -345,7 +357,7 @@
               </div>
               <div class="col-md-6 mb-4">
                 <label class="text-primary">Vergi Daire</label>
-                <select v-model="CRVERGD" class="form-control" id="newCRVERGD">
+                <select v-model="cariEdit.CRVERGD" class="form-control" id="newCRVERGD">
                   <option
                     disabled
                     value="0"
@@ -378,7 +390,7 @@
                   class="form-control"
                   ref="vergidairesi"
                   placeholder="Vergi Dairesi"
-                  v-model="CRVERGNO"
+                  v-model="cariEdit.CRVERGNO"
                 />
               </div>
 
@@ -399,7 +411,7 @@
                   id="newCRTEL"
                   class="form-control"
                   placeholder="Telefon"
-                  v-model="CRTEL"
+                  v-model="cariEdit.CRTEL"
                 />
               </div>
               <div class="col-md-6 mb-4">
@@ -409,7 +421,7 @@
                   id="newCREMAIL"
                   class="form-control"
                   placeholder="E-mail"
-                  v-model="CREMAIL"
+                  v-model="cariEdit.CREMAIL"
                 />
               </div>
             </div>
@@ -437,126 +449,87 @@
 import { mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
 
+import resourceApi from "@/api/smSelf";
+
 export default {
   components: {
     // VergiDaire
   },
   data() {
     return {
+      sonuc: "",
       alertDiv: null,
       alertMessage: null,
-
-      searchName: null,
-      searchCity: null,
-      searchTelephone: null,
-      searchEmail: null,
-
-      cariList: [],
-      sonuc: "",
-
-      // newVergIL: null,
-      // newVergILCE: null,
 
       sehirler: [
         {
           NAME: null,
-          CODE: null
-        }
+          CODE: null,
+        },
       ],
       ilceler: [
         {
           NAME: null,
-          CODE: null
-        }
-      ]
+          CODE: null,
+        },
+      ],
     };
   },
   created() {
+    this.getfrDetail();
     this.getSehirler();
     this.getCariList();
-    this.getfrDetail();
   },
   methods: {
+    //Liste
+    async getCariList() {
+      this.firmaParam.MUTNAME = "SET_CARILIST"; //mutation name
+      this.firmaParam.CRISIM = this.AramaParam.searchCari;
+      //this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
+      //this.firmaParam.FTCRID = this.AramaParam.searchCari;
+      //this.firmaParam.USERCODE = this.AramaParam.searchUser;
+      await resourceApi.getTable("scari", { ...this.firmaParam });
+    },
+
+    //Edit
+    async musteriModal(_ID) {
+      this.firmaParam.MUTNAME = "SET_CARIEDIT";
+      this.firmaParam.CRID = _ID;
+      await resourceApi.getTableID("scari", { ...this.firmaParam });
+    },
+    //Kaydet
+    async musteriDuzenle() {
+      this.cariEdit.Apikey = this.editApikey;
+      this.cariEdit.USERCODE = this.editUserID;
+      await resourceApi.setTable("scari", { ...this.cariEdit });
+      this.getCariList();
+    },
+    //Sil
+    musteriKaldir() {
+      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
+      let _frID = this.$session.get("FRID");
+      let _UserID = this.$session.get("UID");
+      this.$resource("deleteCariID.php")
+        .get({
+          CRID: this.CRID,
+          Apikey: _Apikey,
+          FRID: _frID,
+          USERCODE: _UserID,
+        })
+        .then((response) => {
+          this.sonuc = response.body;
+          this.getCariList();
+        });
+    },
+
     getfrDetail() {
       let _frID = this.$session.get("FRID");
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
       this.$resource("getFirmaDetail.php")
         .get({ FRID: _frID, Apikey: _Apikey })
-        .then(response => {
+        .then((response) => {
           let _VergIL = response.body.data[0]["FRIL"];
           this.$store.dispatch("actSetVergIL", _VergIL);
-        });
-    },
-    VergiDairesiSec(vergi) {
-      const _vergi = [];
-      _vergi.push(vergi);
-      this.$store.dispatch("actSetVd", _vergi);
-    },
-    getCariList() {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getScariList.php")
-        .get({
-          FRID: _frID,
-          Apikey: _Apikey,
-          CRISIM: this.searchName,
-          CRSEHIR: this.searchCity,
-          CRTEL: this.searchTelephone,
-          CREMAIL: this.searchEmail
-        })
-        .then(response => {
-          this.cariList = response.body.data;
-        });
-    },
-    vergiDairesiModal() {
-      this.getvergidairelerFind(this.VergIL, this.VergILCE);
-    },
-    musteriModal(_ID) {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getScariID.php")
-        .get({ FRID: _frID, Apikey: _Apikey, CRID: _ID })
-        .then(response => {
-          let _cariEdit = response.body.data[0];
-          this.$store.dispatch("actSetCariEdit", _cariEdit);
-
-          if (_ID <= 0) {
-            this.CRSEHIR = this.VergIL;
-            this.getvergidaireler("", "", "");
-          } else {
-            this.getvergidaireler("", "", _cariEdit.CRVERGD);
-          }
-          this.getIlceler(this.CRSEHIR);
-        });
-    },
-    //Kaydet
-    musteriDuzenle() {
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      let _frID = this.$session.get("FRID");
-      let _UserID = this.$session.get("UID");
-
-      console.log("CRVERGD: " + this.CRVERGD);
-
-      this.$resource("editScari.php")
-        .get({
-          CRID: this.CRID,
-          Apikey: _Apikey,
-          FRID: _frID,
-          CRISIM: this.CRISIM,
-          USERCODE: _UserID,
-          CRADRES: this.CRADRES,
-          CRSEHIR: this.CRSEHIR,
-          CRILCE: this.CRILCE,
-          CRTEL: this.CRTEL,
-          CREMAIL: this.CREMAIL,
-          CRVERGD: this.CRVERGD,
-          CRVERGNO: this.CRVERGNO
-        })
-        .then(response => {
-          this.sonuc = response.body;
-          this.alertDiv = true;
-          this.alertMessage = response.body[0]["SonucMesaj"];
-          this.getCariList();
         });
     },
     getIlceler(_ID) {
@@ -564,7 +537,7 @@ export default {
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
       this.$resource("getSehirIlceler.php")
         .get({ FRID: _frID, Apikey: _Apikey, ID: _ID })
-        .then(response => {
+        .then((response) => {
           this.ilceler = response.body.data;
         });
     },
@@ -573,9 +546,18 @@ export default {
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
       this.$resource("getSehirler.php")
         .get({ FRID: _frID, Apikey: _Apikey })
-        .then(response => {
+        .then((response) => {
           this.sehirler = response.body.data;
         });
+    },
+
+    vergiDairesiModal() {
+      this.getvergidairelerFind(this.VergIL, this.VergILCE);
+    },
+    VergiDairesiSec(vergi) {
+      const _vergi = [];
+      _vergi.push(vergi);
+      this.$store.dispatch("actSetVd", _vergi);
     },
     getvergidaireler(_IL, _ILCE, _KODU) {
       let _frID = this.$session.get("FRID");
@@ -586,9 +568,9 @@ export default {
           Apikey: _Apikey,
           IL: _IL,
           ILCE: _ILCE,
-          KODU: _KODU
+          KODU: _KODU,
         })
-        .then(response => {
+        .then((response) => {
           const _vergidLer = response.body.data;
           this.$store.dispatch("actSetVd", _vergidLer);
         });
@@ -598,57 +580,35 @@ export default {
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
       this.$resource("getvergidaireList.php")
         .get({ FRID: _frID, Apikey: _Apikey, IL: _IL, ILCE: _ILCE })
-        .then(response => {
+        .then((response) => {
           const _vergidLerFind = response.body.data;
           this.$store.dispatch("actSetVdFind", _vergidLerFind);
         });
     },
-
-    musteriKaldir() {
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      let _frID = this.$session.get("FRID");
-      let _UserID = this.$session.get("UID");
-      this.$resource("deleteCariID.php")
-        .get({
-          CRID: this.CRID,
-          Apikey: _Apikey,
-          FRID: _frID,
-          USERCODE: _UserID
-        })
-        .then(response => {
-          this.sonuc = response.body;
-          this.getCariList();
-        });
-    }
   },
   computed: {
     ...mapState({
-      vergidLer: state => state.vergidLer
+      vergidLer: (state) => state.vergidLer,
     }),
     ...mapFields([
-      "cariEdit.CRID",
-      "cariEdit.CRISIM",
-      "cariEdit.CRADRES",
-      "cariEdit.CRSEHIR",
-      "cariEdit.CRILCE",
-      "cariEdit.CRTEL",
-      "cariEdit.CREMAIL",
-      "cariEdit.CRVERGD",
-      "cariEdit.CRVERGNO",
-      "cariEdit.CRAD",
-      "cariEdit.CRSOYAD",
-      // nested properties in arrays.
-      //'addresses[0].town',
+      "AramaParam",
+      "firmaParam",
+      "cariList",
+      "cariEdit",
+      "editApikey",
+      "editFRID",
+      "editUserID",
+
       "vergidLerFind",
       "vergidLer",
       "VergIL",
-      "VergILCE"
-    ])
+      "VergILCE",
+    ]),
   },
   watch: {
-    CRSEHIR: function() {
+    CRSEHIR: function () {
       this.getIlceler(this.CRSEHIR);
-    }
-  }
+    },
+  },
 };
 </script>

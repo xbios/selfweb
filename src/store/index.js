@@ -30,8 +30,10 @@ export default new Vuex.Store({
     cariEdit: "",
     stokEdit: "",
     fatmastEdit: "",
+    fatdetEdit: "",
 
-    faturaList: [],
+    cariList: [],
+    fatmastList: [],
     fatdetList: [],
 
     vergidLerFind: [],
@@ -40,13 +42,16 @@ export default new Vuex.Store({
     VergIL: null,
     VergILCE: null,
 
-    scari: [],
+    scariCombo: [],
 
     AramaParam: {
       searchBelge: "",
       searchTarih: "",
       searchCari: "",
-      searchUser: ""
+      searchUser: "",
+      searchEmail: "",
+      searchTelephone: "",
+      searchCity: ""
     },
 
     editApikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
@@ -152,22 +157,15 @@ export default new Vuex.Store({
     actSetVergIL(context, il) {
       context.commit("SET_VERGIL", il);
     },
+
     actSetCariEdit(context, cari) {
       context.commit("SET_CARIEDIT", cari);
     },
     actSetStokEdit(context, stok) {
       context.commit("SET_STOKEDIT", stok);
     },
-    // actSetFatmastEdit(context, fatmast) {
-    //   context.commit("SET_FATMASTEDIT", fatmast);
-    // },
-    // actSetfaturaList(context, fatlist) {
-    //   context.commit("SET_FATLIST", fatlist);
-    // },
-    // actSetfatdetList(context, fatdetlist) {
-    //   context.commit("SET_FATDETLIST", fatdetlist);
-    // },
 
+    //////
     actSetData(context, respData) {
       context.commit("SET_DATA", respData);
     },
@@ -180,15 +178,21 @@ export default new Vuex.Store({
 
     SET_DATA(state, respData) {
       const _mut = state.firmaParam.MUTNAME;
-      if (_mut === "SET_FATLIST") state.faturaList = respData;
+      //mutation name ile değişken eşleşmesi.
+      if (_mut === "SET_FATMASTLIST") state.fatmastList = respData;
       if (_mut === "SET_FATMASTEDIT") state.fatmastEdit = respData;
       if (_mut === "SET_FATDETLIST") state.fatdetList = respData;
+      if (_mut === "SET_FATDETEDIT") state.fatdetEdit = respData;
+      if (_mut === "SET_CARILIST") state.cariList = respData;
+      if (_mut === "SET_CARIEDIT") state.cariEdit = respData;
     },
     SET_COMBO(state, respData) {
       const _mut = state.comboParam.MUTNAME;
-      if (_mut === "SET_CARI") state.scari = respData;
+      //mutation name ile değişken eşleşmesi.
+      if (_mut === "SET_CARICOMBO") state.scariCombo = respData;
     },
 
+    //
     SET_VERGIDAIREFIND(state, vd) {
       state.vergidLerFind = vd;
     },
@@ -202,21 +206,13 @@ export default new Vuex.Store({
     SET_VERGIL(state, il) {
       state.VergIL = il;
     },
+
     SET_CARIEDIT(state, cari) {
       state.cariEdit = cari;
     },
     SET_STOKEDIT(state, stok) {
       state.stokEdit = stok;
     },
-    // SET_FATMASTEDIT(state, fatmast) {
-    //   state.fatmastEdit = fatmast;
-    // },
-    // SET_FATLIST(state, fatlist) {
-    //   state.faturaList = fatlist;
-    // },
-    // SET_FATDETLIST(state, fatdetlist) {
-    //   state.fatdetList = fatdetlist;
-    // },
 
     // Sets the layout, useful for setting different layouts (under layouts/variations/)
     setLayout(state, payload) {

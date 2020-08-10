@@ -88,7 +88,7 @@
             </b-tr>
           </b-thead>
           <b-tbody>
-            <b-tr v-for="fatura in faturaList" :key="fatura.SFATMASTID">
+            <b-tr v-for="fatura in fatmastList" :key="fatura.SFATMASTID">
               <b-td>{{ fatura.FTTUR2 }}</b-td>
               <b-td>{{ fatura.FTBELNO }}</b-td>
               <b-td>{{ fatura.FTTARIH }}</b-td>
@@ -168,24 +168,24 @@ export default {
   methods: {
     async getFaturaList() {
       //sfatmast
-      this.firmaParam.MUTNAME = "SET_FATLIST"; //mutation name
+      this.firmaParam.MUTNAME = "SET_FATMASTLIST"; //mutation name
       this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
       this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
-      await resourceApi.getTable("sfatmast", "Liste", { ...this.firmaParam });
+      await resourceApi.getTable("sfatmast", { ...this.firmaParam });
     },
 
     async faturaModal(_ID) {
       //sfatmast
       this.firmaParam.MUTNAME = "SET_FATMASTEDIT";
       this.firmaParam.SFATMASTID = _ID;
-      await resourceApi.getTable("sfatmast", "Edit", { ...this.firmaParam });
+      await resourceApi.getTableID("sfatmast", { ...this.firmaParam });
 
       //sfatdet
       this.firmaParam.MUTNAME = "SET_FATDETLIST";
       this.firmaParam.FTID = _ID;
-      await resourceApi.getTable("sfatdet", "Liste", { ...this.firmaParam });
+      await resourceApi.getTable("sfatdet", { ...this.firmaParam });
     },
   },
   computed: {
@@ -194,9 +194,9 @@ export default {
     }),
     ...mapFields([
       //
-      "faturaList",
       "AramaParam",
       "firmaParam",
+      "fatmastList",
     ]),
   },
 };

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Begin Modal context  -->
     <div class="block block-themed block-transparent mb-0">
       <div class="block-header bg-primary-dark">
         <h3 class="block-title">Fatura Düzenleme</h3>
@@ -58,7 +59,12 @@
           </div>-->
           <div class="col-md-8 mb-4">
             <label class="text-primary">Cari Ünvan</label>
-            <b-form-select id="example-select" v-model="fatmastEdit.FTCRID" :options="scari" plain></b-form-select>
+            <b-form-select
+              id="example-select"
+              v-model="fatmastEdit.FTCRID"
+              :options="scariCombo"
+              plain
+            ></b-form-select>
           </div>
 
           <div class="form-check form-check-inline">
@@ -118,9 +124,10 @@
         </b-button>
       </div>
     </div>
+    <!-- End Modal context-->
+
     <!-- Begin detay Table -->
     <faturadetayList />
-
     <!-- End detay Table -->
   </div>
 </template>
@@ -148,30 +155,32 @@ export default {
     };
   },
   created() {
-    this.getCari();
+    this.getCariCombo();
   },
   methods: {
-    async faturaKaydet() {
-      this.fatmastEdit.Apikey = this.editApikey;
-      this.fatmastEdit.USERCODE = this.editUserID;
-      await resourceApi.setTable("sfatmast", { ...this.fatmastEdit });
-      this.getFaturaList();
-    },
-    async getFaturaList() {
-      this.firmaParam.MUTNAME = "SET_FATLIST"; //mutation name
-      this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
-      this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
-      this.firmaParam.FTCRID = this.AramaParam.searchCari;
-      this.firmaParam.USERCODE = this.AramaParam.searchUser;
-      await resourceApi.getTable("sfatmast", "Liste", { ...this.firmaParam });
-    },
-    async getCari() {
+    async getCariCombo() {
       this.comboParam.VALUE = "CRID";
       this.comboParam.TEXT = "CRISIM";
       this.comboParam.TABLE = "scari";
       this.comboParam.SECIM = "";
-      this.comboParam.MUTNAME = "SET_CARI";
-      await resourceApi.getCombo("scari", { ...this.comboParam });
+      this.comboParam.MUTNAME = "SET_CARICOMBO";
+      await resourceApi.getCombo({ ...this.comboParam });
+    },
+    async faturaKaydet() {
+      this.fatmastEdit.Apikey = this.editApikey;
+      this.fatmastEdit.USERCODE = this.editUserID;
+      await resourceApi.setTable("sfatmast", { ...this.fatmastEdit });
+      // .then(() => {
+      //   });
+      this.getFaturaList();
+    },
+    async getFaturaList() {
+      this.firmaParam.MUTNAME = "SET_FATMASTLIST"; //mutation name
+      this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
+      this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
+      this.firmaParam.FTCRID = this.AramaParam.searchCari;
+      this.firmaParam.USERCODE = this.AramaParam.searchUser;
+      await resourceApi.getTable("sfatmast", { ...this.firmaParam });
     },
   },
   computed: {
@@ -180,15 +189,15 @@ export default {
     }),
     ...mapFields([
       //
-      "fatmastEdit",
       "AramaParam",
       "firmaParam",
+      "fatmastEdit",
       "comboParam",
-      "scari",
+      "scariCombo",
+      "FaturaTuru",
       "editApikey",
       "editFRID",
       "editUserID",
-      "FaturaTuru",
     ]),
   },
 };

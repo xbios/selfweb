@@ -13,13 +13,13 @@ import store from "../store";
 
 export default {
   //php
-  async getCombo(_tbl, params) {
+  async getCombo(params) {
+    //b-form-select  combobox için  [{value: "1", text: "İSMAİL KILBÜKER"},  şeklinde
     await Vue.resource("getValueText.php")
       .get({
         ...params
       })
       .then(response => {
-        //console.log("resp: " + response.body.data);
         store.dispatch("actSetCombo", response.body.data);
       })
       .catch(error => {
@@ -28,20 +28,40 @@ export default {
   },
 
   //php
-  async getTable(_tbl, _ynt, params) {
-    //
-    if (_tbl === "sfatmast" && _ynt === "Liste") _php = "getSfatmastList.php";
-    if (_tbl === "sfatmast" && _ynt === "Edit") _php = "getSfatmastID.php";
-    //
-    if (_tbl === "sfatdet" && _ynt === "Liste") _php = "getSfatdetList.php";
+  async getTable(_tbl, params) {
+    //sql table için php karşılıkları liste için
+    if (_tbl === "sfatmast") _php = "getSfatmastList.php";
+    if (_tbl === "sfatdet") _php = "getSfatdetList.php";
+    if (_tbl === "scari") _php = "getScariList.php";
     ////
-    await this.getData(params, _php, _ynt);
+    await this.getData(params, _php, "Liste");
+  },
+  //php
+  async getTableID(_tbl, params) {
+    //sql table için php karşılıkları tek kayıt için
+    if (_tbl === "sfatmast") _php = "getSfatmastID.php";
+    if (_tbl === "sfatdet") _php = "getSfatdetID.php";
+    if (_tbl === "scari") _php = "getScariID.php";
+    ////
+    await this.getData(params, _php, "Edit");
   },
 
   //php
   async setTable(_tbl, params) {
+    //sql table için php karşılıkları kaydet mek için.
     if (_tbl === "sfatmast") _php = "editSfatmast.php";
     if (_tbl === "sfatdet") _php = "editSfatdet.php";
+    if (_tbl === "scari") _php = "editScari.php";
+    ////
+    await this.setData(params, _php);
+  },
+
+  //php
+  async deleteTable(_tbl, params) {
+    //sql table için php karşılıkları silmek için.
+    if (_tbl === "sfatmast") _php = "deleteSfatmast.php";
+    if (_tbl === "sfatdet") _php = "deleteSfatdet.php";
+    if (_tbl === "scari") _php = "deleteCariID.php";
     ////
     await this.setData(params, _php);
   },
@@ -70,8 +90,12 @@ export default {
         ...params
       })
       .then(response => {
-        console.log("response.body: " + response.body[0].SonucKodu);
-        console.log("response.body: " + response.body[0].SonucMesaj);
+        console.log(
+          "Kod: " +
+            response.body[0].SonucKodu +
+            "  Mesaj : " +
+            response.body[0].SonucMesaj
+        );
       })
       .catch(error => {
         console.log(error);

@@ -439,7 +439,7 @@ export default new Router({
             },
             {
               path: "stokgrup",
-              name: "cari grup",
+              name: "stok grup",
               component: stokgrup
             },
             {
