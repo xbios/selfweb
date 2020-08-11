@@ -330,43 +330,40 @@
 
               <div class="col-md-6 mb-4">
                 <label class="text-primary">Şehir</label>
-                <select v-model="CRSEHIR" class="form-control" id="newCRSEHIR">
-                  <option
-                    v-for="sehir in sehirler"
-                    v-bind:key="sehir.name"
-                    v-bind:value="sehir.name"
-                    :selected="CRSEHIR == sehir.name"
-                  >{{ sehir.name }}</option>
-                </select>
+                <b-form-select
+                  class="form-control"
+                  id="newCRSEHIR"
+                  v-model="CRSEHIR"
+                  :options="sehirler"
+                  value-field="name"
+                  text-field="name"
+                ></b-form-select>
+                <!-- class="mb-3" -->
+                <!-- disabled-field="notEnabled" -->
               </div>
 
               <div class="col-md-6 mb-4">
                 <label for="newCRILCE" class="text-primary">İlçe</label>
-                <select v-model="cariEdit.CRILCE" class="form-control" id="newCRILCE">
-                  <option
-                    v-for="ilce in ilceler"
-                    v-bind:key="ilce.name"
-                    v-bind:value="ilce.name"
-                    :selected="cariEdit.CRILCE == ilce.name"
-                  >{{ ilce.name }}</option>
-                </select>
+                <b-form-select
+                  class="form-control"
+                  id="newCRILCE"
+                  v-model="cariEdit.CRILCE"
+                  :options="ilceler"
+                  value-field="name"
+                  text-field="name"
+                ></b-form-select>
               </div>
 
               <div class="col-md-6 mb-4">
                 <label class="text-primary">Vergi Daire</label>
-                <select v-model="cariEdit.CRVERGD" class="form-control" id="newCRVERGD">
-                  <option
-                    disabled
-                    value="0"
-                    :selected="cariEdit.CRVERGD == 0"
-                  >Lütfen Vergi Dairesi seçimi yapınız</option>
-                  <option
-                    v-for="vergid in vergidLer"
-                    v-bind:key="vergid.KODU"
-                    v-bind:value="vergid.KODU"
-                    :selected="vergid.KODU == cariEdit.CRVERGD"
-                  >{{ vergid.ADI }}</option>
-                </select>
+                <b-form-select
+                  class="form-control"
+                  id="CRVERGD"
+                  v-model="cariEdit.CRVERGD"
+                  :options="vergidLer"
+                  value-field="KODU"
+                  text-field="ADI"
+                ></b-form-select>
               </div>
               <div class="col-md-1 mb-4">
                 <label class="text-primary col-md-12">&nbsp;</label>
@@ -528,6 +525,13 @@ export default {
     VergiDairesiSec(vergi) {
       const _vergi = [];
       _vergi.push(vergi);
+      _vergi.push({
+        ADI: "Lütfen Vergi Dairesi seçimi yapınız",
+        ID: "0",
+        IL: "",
+        ILCE: "",
+        KODU: "0",
+      });
       this.vergidLer = _vergi;
       this.cariEdit.CRVERGD = _vergi[0].KODU;
     },
@@ -546,10 +550,10 @@ export default {
       this.firmaParam.IL = _IL;
       this.firmaParam.ILCE = _ILCE;
       this.firmaParam.KODU = _KODU;
-      await resourceApi.getTableID("xvergidaire", { ...this.firmaParam });
-      const _vergi = [];
-      _vergi.push(this.vergidLer);
-      this.vergidLer = _vergi;
+      await resourceApi.getTable("xvergidaire", { ...this.firmaParam });
+      //const _vergi = [];
+      //_vergi.push(this.vergidLer);
+      //this.vergidLer = _vergi;
     },
   },
   computed: {

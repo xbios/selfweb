@@ -33,6 +33,7 @@ export default new Vuex.Store({
     fatdetEdit: "",
 
     cariList: [],
+    stokList: [],
     fatmastList: [],
     fatdetList: [],
 
@@ -43,6 +44,8 @@ export default new Vuex.Store({
     VergILCE: null,
 
     scariCombo: [],
+    anaGrupCombo: [],
+    altGrupCombo: [],
 
     AramaParam: {
       searchBelge: "",
@@ -51,7 +54,11 @@ export default new Vuex.Store({
       searchUser: "",
       searchEmail: "",
       searchTelephone: "",
-      searchCity: ""
+      searchCity: "",
+      searchKodu: "",
+      searchAdi: "",
+      searchAnaGrup: "",
+      searchAltGrup: ""
     },
 
     editApikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
@@ -86,6 +93,19 @@ export default new Vuex.Store({
       { value: 5, text: "V.hizmet" },
       { value: 6, text: "A.hizmet" },
       { value: -1, text: "A.Fişi" }
+    ],
+
+    BirimListe: [
+      { value: null, text: "Seçiniz" },
+      { value: 1, text: "Adet" },
+      { value: 2, text: "Kutu" },
+      { value: 3, text: "Koli" }
+    ],
+    KdvListe: [
+      { value: null, text: "Seçiniz" },
+      { value: 1, text: "1" },
+      { value: 2, text: "8" },
+      { value: 3, text: "18" }
     ],
 
     // App vital details
@@ -171,13 +191,28 @@ export default new Vuex.Store({
       if (_mut === "SET_FATDETEDIT") state.fatdetEdit = respData;
       if (_mut === "SET_CARILIST") state.cariList = respData;
       if (_mut === "SET_CARIEDIT") state.cariEdit = respData;
+
+      if (_mut === "SET_STOKLIST") state.stokList = respData;
+      if (_mut === "SET_STOKEDIT") state.stokEdit = respData;
+
       if (_mut === "SET_VERGIDLIST") state.vergidLerFind = respData;
-      if (_mut === "SET_VERGIDEDIT") state.vergidLer = respData;
+      if (_mut === "SET_VERGIDEDIT") {
+        state.vergidLer = respData;
+        state.vergidLer.push({
+          ADI: "Lütfen Vergi Dairesi seçimi yapınız",
+          ID: "0",
+          IL: "",
+          ILCE: "",
+          KODU: "0"
+        });
+      }
     },
     SET_COMBO(state, respData) {
       const _mut = state.comboParam.MUTNAME;
       //mutation name ile değişken eşleşmesi.
       if (_mut === "SET_CARICOMBO") state.scariCombo = respData;
+      if (_mut === "SET_ANAGRUPCOMBO") state.anaGrupCombo = respData;
+      if (_mut === "SET_ALTGRUPCOMBO") state.altGrupCombo = respData;
     },
 
     SET_STOKEDIT(state, stok) {

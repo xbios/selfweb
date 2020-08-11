@@ -34,7 +34,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Stok Kodu bilgisi..."
-              v-model="searchKodu"
+              v-model="AramaParam.searchKodu"
               @keyup.enter="getStokList()"
             />
           </div>
@@ -44,7 +44,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Stok Adı bilgisi..."
-              v-model="searchAdi"
+              v-model="AramaParam.searchAdi"
               @keyup.enter="getStokList()"
             />
           </div>
@@ -54,7 +54,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Ana Grup bilgisi..."
-              v-model="searchAnaGrup"
+              v-model="AramaParam.searchAnaGrup"
               @keyup.enter="getStokList()"
             />
           </div>
@@ -64,7 +64,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Alt Grup bilgisi..."
-              v-model="searchAltGrup"
+              v-model="AramaParam.searchAltGrup"
               @keyup.enter="getStokList()"
             />
           </div>
@@ -157,7 +157,7 @@
                   id="STOKKOD"
                   placeholder="Stok kodu"
                   type="text"
-                  v-model="STOKKOD"
+                  v-model="stokEdit.STOKKOD"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -170,7 +170,7 @@
                   id="BARCODE"
                   placeholder="Barkod"
                   type="text"
-                  v-model="BARCODE"
+                  v-model="stokEdit.BARCODE"
                 />
               </div>
               <div class="col-md-6 mb-4">
@@ -183,7 +183,7 @@
                   id="STOKADI"
                   placeholder="Stok adı"
                   type="text"
-                  v-model="STOKADI"
+                  v-model="stokEdit.STOKADI"
                 />
               </div>
 
@@ -199,24 +199,25 @@
                   </button>
                   Birim
                 </label>
-                <select class="form-control" id="STBIRIM" v-model="STBIRIM">
-                  <!--<option :selected="STBIRIM == birim.name" v-bind:key="birim.name" v-bind:value="birim.name" v-for="birim in birimler">
-                    {{ sehir.name }}
-                  </option>-->
-                  <option>Adet</option>
-                  <option>Kutu</option>
-                  <option>Koli</option>
-                </select>
+                <b-form-select
+                  class="form-control"
+                  id="STBIRIM"
+                  v-model="stokEdit.STBIRIM"
+                  :options="BirimListe"
+                  value-field="text"
+                  text-field="text"
+                ></b-form-select>
               </div>
               <div class="col-md-3 mb-4">
                 <label class="text-primary">2. Birim</label>
-                <select class="form-control" id="STBIRIM2" v-model="STBIRIM2">
-                  <!--<option :selected="CRSEHIR == sehir.name" v-bind:key="sehir.name" v-bind:value="sehir.name" v-for="sehir in sehirler">
-                    {{ sehir.name }}
-                  </option>-->
-                  <option>Kutu</option>
-                  <option>Koli</option>
-                </select>
+                <b-form-select
+                  class="form-control"
+                  id="STBIRIM2"
+                  v-model="stokEdit.STBIRIM2"
+                  :options="BirimListe"
+                  value-field="text"
+                  text-field="text"
+                ></b-form-select>
               </div>
               <div class="col-md-3 mb-4">
                 <label class="text-primary" for="STBIRIM2KATSAYI">2. Birim Katsayı</label>
@@ -225,7 +226,7 @@
                   id="STBIRIM2KATSAYI"
                   placeholder="2. Birim Katsayı"
                   type="number"
-                  v-model="STBIRIM2KATSAYI"
+                  v-model="stokEdit.STBIRIM2KATSAYI"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -235,20 +236,21 @@
                   id="STKRITIK"
                   placeholder="Kritik Seviye"
                   type="number"
-                  v-model="STKRITIK"
+                  v-model="stokEdit.STKRITIK"
                 />
               </div>
 
               <div class="col-md-3 mb-4">
                 <label class="text-primary">Kdv</label>
-                <select class="form-control" id="STKDV" v-model="STKDV">
-                  <!--<option :selected="CRSEHIR == sehir.name" v-bind:key="sehir.name" v-bind:value="sehir.name" v-for="sehir in sehirler">
-                    {{ sehir.name }}
-                  </option>-->
-                  <option>1</option>
-                  <option>8</option>
-                  <option>18</option>
-                </select>
+                <b-form-select
+                  class="form-control"
+                  id="STKDV"
+                  v-model="stokEdit.STKDV"
+                  :options="KdvListe"
+                  value-field="text"
+                  text-field="text"
+                  plain
+                ></b-form-select>
               </div>
               <div class="col-md-3 mb-4">
                 <label class="text-primary" for="STISKONTO">İskonto</label>
@@ -257,31 +259,31 @@
                   id="STISKONTO"
                   placeholder="İskonto"
                   type="number"
-                  v-model="STISKONTO"
+                  v-model="stokEdit.STISKONTO"
                 />
               </div>
 
               <div class="col-md-3 mb-4">
                 <label class="text-primary">Ana Grup</label>
-                <select class="form-control" id="STOKGRP1" v-model="STOKGRP1">
-                  <option
-                    :selected="STOKGRP1 == anagrup.GRUPANA"
-                    v-bind:key="anagrup.GRUPANA"
-                    v-bind:value="anagrup.GRUPANA"
-                    v-for="anagrup in anagruplar"
-                  >{{ anagrup.GRUPANA }}</option>
-                </select>
+                <b-form-select
+                  id="example-select"
+                  v-model="stokEdit.STOKGRP1"
+                  :options="anaGrupCombo"
+                  value-field="text"
+                  text-field="text"
+                  plain
+                ></b-form-select>
               </div>
               <div class="col-md-3 mb-4">
                 <label class="text-primary">Alt Grup</label>
-                <select class="form-control" id="STOKGRP2" v-model="STOKGRP2">
-                  <option
-                    :selected="STOKGRP2 == altgrup.GRUPALT"
-                    v-bind:key="altgrup.GRUPALT"
-                    v-bind:value="altgrup.GRUPALT"
-                    v-for="altgrup in altgruplar"
-                  >{{ altgrup.GRUPALT }}</option>
-                </select>
+                <b-form-select
+                  id="example-select"
+                  v-model="stokEdit.STOKGRP2"
+                  :options="altGrupCombo"
+                  value-field="text"
+                  text-field="text"
+                  plain
+                ></b-form-select>
               </div>
 
               <div class="col-md-3 mb-4">
@@ -291,7 +293,7 @@
                   id="STALISFIYAT"
                   placeholder="Alış Fiyatı"
                   type="number"
-                  v-model="STALISFIYAT"
+                  v-model="stokEdit.STALISFIYAT"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -301,7 +303,7 @@
                   id="STSATISFIYAT1"
                   placeholder="1. Satış Fiyatı"
                   type="number"
-                  v-model="STSATISFIYAT1"
+                  v-model="stokEdit.STSATISFIYAT1"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -311,7 +313,7 @@
                   id="STSATISFIYAT2"
                   placeholder="2. SAtış Fiyatı"
                   type="text"
-                  v-model="STSATISFIYAT2"
+                  v-model="stokEdit.STSATISFIYAT2"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -321,7 +323,7 @@
                   id="STSATISFIYAT3"
                   placeholder="3. Satış Fiyatı"
                   type="text"
-                  v-model="STSATISFIYAT3"
+                  v-model="stokEdit.STSATISFIYAT3"
                 />
               </div>
               <div class="col-md-2 mb-4">
@@ -331,7 +333,7 @@
                   id="ACILISMIKTARI"
                   placeholder="Açılış Miktarı"
                   type="text"
-                  v-model="ACILISMIKTARI"
+                  v-model="stokEdit.ACILISMIKTARI"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -342,7 +344,7 @@
                   id="GIRIS"
                   placeholder="Giriş Miktarı"
                   type="text"
-                  v-model="GIRIS"
+                  v-model="stokEdit.GIRIS"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -353,7 +355,7 @@
                   id="CIKIS"
                   placeholder="Çıkış Miktarı"
                   type="text"
-                  v-model="CIKIS"
+                  v-model="stokEdit.CIKIS"
                 />
               </div>
               <div class="col-md-3 mb-4">
@@ -364,7 +366,7 @@
                   class="form-control bg-gray"
                   id="KAYITDATE"
                   placeholder="YYYY-AA-GG"
-                  v-model="KAYITDATE"
+                  v-model="stokEdit.KAYITDATE"
                 ></flat-pickr>
               </div>
               <div class="form-check form-check-inline">
@@ -374,7 +376,7 @@
                   id="PASIF"
                   true-value="1"
                   false-value="0"
-                  v-model="PASIF"
+                  v-model="stokEdit.PASIF"
                 />
                 <label class="form-check-label" for="inlineCheckbox1">Pasif</label>
               </div>
@@ -459,184 +461,92 @@ import { mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
 import flatPickr from "vue-flatpickr-component";
 
+import resourceApi from "@/api/smSelf";
+
 export default {
   // name:,
   components: {
-    flatPickr
+    flatPickr,
   },
   data() {
     return {
+      configCustom: { dateFormat: "Y-m-d" },
+      sonuc: "",
       alertDiv: null,
       alertMessage: null,
-
-      configCustom: { dateFormat: "Y-m-d" },
-
-      // searchName: null,
-      // searchCity: null,
-      // searchTelephone: null,
-      // searchEmail: null,
-
-      searchKodu: null,
-      searchAdi: null,
-      searchAnaGrup: null,
-      searchAltGrup: null,
-
-      anagruplar: [],
-      altgruplar: [],
-
-      stokList: [],
-      sonuc: ""
     };
   },
   created() {
-    this.getanagrup();
-    this.getaltgrup();
+    // this.getanagrup();
+    // this.getaltgrup();
     this.getStokList();
   },
   methods: {
-    getanagrup() {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getStgrupanaList.php")
-        .get({ FRID: _frID, Apikey: _Apikey })
-        .then(response => {
-          this.anagruplar = response.body.data;
-        });
+    async getanagrup() {
+      this.comboParam.VALUE = "PIN_STGRUPANA";
+      this.comboParam.TEXT = "GRUPANA";
+      this.comboParam.TABLE = "stgrupana";
+      this.comboParam.SECIM = "";
+      this.comboParam.MUTNAME = "SET_ANAGRUPCOMBO";
+      await resourceApi.getCombo({ ...this.comboParam });
     },
-    getaltgrup() {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getStgrupaltList.php")
-        .get({ FRID: _frID, Apikey: _Apikey })
-        .then(response => {
-          this.altgruplar = response.body.data;
-        });
+    async getaltgrup() {
+      this.comboParam.VALUE = "ID";
+      this.comboParam.TEXT = "GRUPALT";
+      this.comboParam.TABLE = "stgrupalt";
+      this.comboParam.SECIM = "";
+      this.comboParam.MUTNAME = "SET_ALTGRUPCOMBO";
+      await resourceApi.getCombo({ ...this.comboParam });
     },
-    getStokList() {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getSstokList.php")
-        .get({
-          FRID: _frID,
-          Apikey: _Apikey
-          // CRISIM: this.searchName,
-          // CRSEHIR: this.searchCity,
-          // CRTEL: this.searchTelephone,
-          // CREMAIL: this.searchEmail
-        })
-        .then(response => {
-          this.stokList = response.body.data;
-        });
+    async getStokList() {
+      await this.getanagrup();
+      await this.getaltgrup();
+
+      this.firmaParam.MUTNAME = "SET_STOKLIST"; //mutation name
+      this.firmaParam.STOKKOD = this.AramaParam.searchKodu;
+      await resourceApi.getTable("sstok", { ...this.firmaParam });
     },
-    stokModal(_ID) {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getSstokID.php")
-        .get({ FRID: _frID, Apikey: _Apikey, SSTOKID: _ID })
-        .then(response => {
-          let _stokEdit = response.body.data[0];
-          this.$store.dispatch("actSetStokEdit", _stokEdit);
-
-          if (_ID <= 0) {
-            this.KAYITDATE = "2020-01-01";
-          }
-        });
+    async stokModal(_ID) {
+      this.firmaParam.MUTNAME = "SET_STOKEDIT";
+      this.firmaParam.SSTOKID = _ID;
+      await resourceApi.getTableID("sstok", { ...this.firmaParam });
+      if (_ID <= 0) {
+        this.stokEdit.KAYITDATE = new Date(); //"2020-01-01";
+      }
+      //});
     },
-    stokKaydet() {
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      let _frID = this.$session.get("FRID");
-      let _UserID = this.$session.get("UID");
-
-      console.log("_frID: " + _frID);
-      console.log("_UserID: " + _UserID);
-
-      this.$resource("editSstok.php")
-        .get({
-          SSTOKID: this.SSTOKID,
-          Apikey: _Apikey,
-          FRID: _frID,
-          KAYITUSER: _UserID,
-          STOKKOD: this.STOKKOD,
-          BARCODE: this.BARCODE,
-          STOKADI: this.STOKADI,
-
-          STBIRIM: this.STBIRIM,
-          STBIRIM2: this.STBIRIM2,
-          STBIRIM2KATSAYI: this.STBIRIM2KATSAYI,
-          STKDV: this.STKDV,
-          STISKONTO: this.STISKONTO,
-          STKRITIK: this.STKRITIK,
-
-          STOKGRP1: this.STOKGRP1,
-          STOKGRP2: this.STOKGRP2,
-
-          STALISFIYAT: this.STALISFIYAT,
-          STSATISFIYAT1: this.STSATISFIYAT1,
-          STSATISFIYAT2: this.STSATISFIYAT2,
-          STSATISFIYAT3: this.STSATISFIYAT3,
-          ACILISMIKTARI: this.ACILISMIKTARI,
-          PASIF: this.PASIF,
-          KAYITDATE: this.KAYITDATE
-        })
-        .then(response => {
-          this.sonuc = response.body;
-          this.alertDiv = true;
-          this.alertMessage = response.body[0]["SonucMesaj"];
-          this.getStokList();
-        });
+    async stokKaydet() {
+      this.stokEdit.Apikey = this.editApikey;
+      this.stokEdit.USERCODE = this.editUserID;
+      this.stokEdit.FRID = this.editFRID;
+      await resourceApi.setTable("sstok", { ...this.stokEdit });
+      this.getStokList();
     },
-    stokKaldir() {
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      let _frID = this.$session.get("FRID");
-      let _UserID = this.$session.get("UID");
-      this.$resource("deleteSstok.php")
-        .get({
-          SSTOKID: this.SSTOKID,
-          Apikey: _Apikey,
-          FRID: _frID,
-          USERCODE: _UserID
-        })
-        .then(response => {
-          this.sonuc = response.body;
-          this.getStokList();
-        });
-    }
+    async stokKaldir() {
+      this.firmaParam.SSTOKID = this.stokEdit.SSTOKID;
+      await resourceApi.deleteTable("sstok", { ...this.firmaParam });
+      this.getStokList();
+    },
   },
   computed: {
     ...mapState({
       // vergidLer: state => state.vergidLer
     }),
     ...mapFields([
-      "stokEdit.SSTOKID",
-      "stokEdit.STOKKOD",
-      "stokEdit.BARCODE",
-      "stokEdit.STOKADI",
-
-      "stokEdit.STBIRIM",
-      "stokEdit.STBIRIM2",
-      "stokEdit.STBIRIM2KATSAYI",
-
-      "stokEdit.STKDV",
-      "stokEdit.STISKONTO",
-      "stokEdit.STKRITIK",
-
-      "stokEdit.STOKGRP1",
-      "stokEdit.STOKGRP2",
-
-      "stokEdit.STALISFIYAT",
-      "stokEdit.STSATISFIYAT1",
-      "stokEdit.STSATISFIYAT2",
-      "stokEdit.STSATISFIYAT3",
-
-      "stokEdit.ACILISMIKTARI",
-      "stokEdit.GIRIS",
-      "stokEdit.CIKIS",
-
-      "stokEdit.PASIF",
-      "stokEdit.KAYITUSER",
-      "stokEdit.KAYITDATE"
-    ])
-  }
+      "AramaParam",
+      "firmaParam",
+      "stokList",
+      "stokEdit",
+      "editApikey",
+      "editFRID",
+      "editUserID",
+      "BirimListe",
+      "KdvListe",
+      "comboParam",
+      "anaGrupCombo",
+      "altGrupCombo",
+    ]),
+  },
 };
 </script>
 

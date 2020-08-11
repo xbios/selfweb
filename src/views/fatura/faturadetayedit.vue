@@ -49,19 +49,27 @@
           </div>
           <div class="col-md-3 mb-4">
             <label class="text-primary">Birim</label>
-            <select class="form-control" id="FDBIRIM" v-model="fatdetEdit.FDBIRIM">
-              <option>Adet</option>
-              <option>Kutu</option>
-              <option>Koli</option>
-            </select>
+            <b-form-select
+              class="form-control"
+              id="FDBIRIM"
+              v-model="fatdetEdit.FDBIRIM"
+              :options="BirimListe"
+              value-field="text"
+              text-field="text"
+              plain
+            ></b-form-select>
           </div>
           <div class="col-md-3 mb-4">
             <label class="text-primary">Kdv</label>
-            <select class="form-control" id="FDKDV" v-model="fatdetEdit.FDKDV">
-              <option>1</option>
-              <option>8</option>
-              <option>18</option>
-            </select>
+            <b-form-select
+              class="form-control"
+              id="FDKDV"
+              v-model="fatdetEdit.FDKDV"
+              :options="KdvListe"
+              value-field="text"
+              text-field="text"
+              plain
+            ></b-form-select>
           </div>
           <div class="col-md-4 mb-4">
             <label class="text-primary" for="FDINDIRIMYUZDE">İndirim %</label>
@@ -148,6 +156,8 @@ export default {
       "editApikey",
       "editFRID",
       "editUserID",
+      "BirimListe",
+      "KdvListe",
     ]),
     _FIYATSUM: function () {
       let sum = 0;
