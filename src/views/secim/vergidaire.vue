@@ -93,26 +93,26 @@ export default {
     VergiDairesiSec(vergi) {
       const _vergi = [];
       _vergi.push(vergi);
-      this.$store.dispatch("actSetVd", _vergi);
+      //this.$store.dispatch("actSetVd", _vergi);
     },
     getvergidairelerFind(_IL, _ILCE) {
       let _frID = this.$session.get("FRID");
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
       this.$resource("getvergidaireList.php")
         .get({ FRID: _frID, Apikey: _Apikey, IL: _IL, ILCE: _ILCE })
-        .then(response => {
+        .then((response) => {
           const _vergidLerFind = response.body.data;
           this.$store.dispatch("actSetVdFind", _vergidLerFind);
         });
-    }
+    },
   },
   computed: {
     ...mapState({
-      vergidLerFind: state => state.vergidLerFind,
-      VergIL: state => state.VergIL,
-      VergILCE: state => state.VergILCE
-    })
-  }
+      vergidLerFind: (state) => state.vergidLerFind,
+      VergIL: (state) => state.VergIL,
+      VergILCE: (state) => state.VergILCE,
+    }),
+  },
 };
 </script>
 

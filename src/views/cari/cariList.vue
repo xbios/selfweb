@@ -327,9 +327,10 @@
                   v-model="cariEdit.CRADRES"
                 />
               </div>
+
               <div class="col-md-6 mb-4">
                 <label class="text-primary">Şehir</label>
-                <select v-model="cariEdit.CRSEHIR" class="form-control" id="newCRSEHIR">
+                <select v-model="CRSEHIR" class="form-control" id="newCRSEHIR">
                   <option
                     v-for="sehir in sehirler"
                     v-bind:key="sehir.name"
@@ -338,36 +339,32 @@
                   >{{ sehir.name }}</option>
                 </select>
               </div>
+
               <div class="col-md-6 mb-4">
                 <label for="newCRILCE" class="text-primary">İlçe</label>
-                <!--  <input type="text"
-                       id="newCRILCE"
-                       class="form-control"
-                       :value="newCRILCE"
-                       placeholder="İlçe"
-                @input="newCRILCE = $event.target.value" >-->
                 <select v-model="cariEdit.CRILCE" class="form-control" id="newCRILCE">
                   <option
                     v-for="ilce in ilceler"
                     v-bind:key="ilce.name"
                     v-bind:value="ilce.name"
-                    :selected="CRILCE == ilce.name"
+                    :selected="cariEdit.CRILCE == ilce.name"
                   >{{ ilce.name }}</option>
                 </select>
               </div>
+
               <div class="col-md-6 mb-4">
                 <label class="text-primary">Vergi Daire</label>
                 <select v-model="cariEdit.CRVERGD" class="form-control" id="newCRVERGD">
                   <option
                     disabled
                     value="0"
-                    :selected="CRVERGD == 0"
+                    :selected="cariEdit.CRVERGD == 0"
                   >Lütfen Vergi Dairesi seçimi yapınız</option>
                   <option
                     v-for="vergid in vergidLer"
                     v-bind:key="vergid.KODU"
                     v-bind:value="vergid.KODU"
-                    :selected="vergid.KODU == CRVERGD"
+                    :selected="vergid.KODU == cariEdit.CRVERGD"
                   >{{ vergid.ADI }}</option>
                 </select>
               </div>
@@ -393,16 +390,6 @@
                   v-model="cariEdit.CRVERGNO"
                 />
               </div>
-
-              <!--<div class="form-group">
-                <label for="newCRSEHIR">Şehir</label>
-                <input type="text"
-                       id="newCRSEHIR"
-                       class="form-control"
-                       :value="newCRSEHIR"
-                       placeholder="Şehir"
-                       @input="newCRSEHIR = $event.target.value" >
-              </div>-->
 
               <div class="col-md-6 mb-4">
                 <label for="newCRTEL" class="text-primary">Telefon</label>
@@ -490,55 +477,34 @@ export default {
       //this.firmaParam.USERCODE = this.AramaParam.searchUser;
       await resourceApi.getTable("scari", { ...this.firmaParam });
     },
-
     //Edit
     async musteriModal(_ID) {
       this.firmaParam.MUTNAME = "SET_CARIEDIT";
       this.firmaParam.CRID = _ID;
       await resourceApi.getTableID("scari", { ...this.firmaParam });
+      this.getvergidaire("", "", this.cariEdit.CRVERGD);
     },
     //Kaydet
     async musteriDuzenle() {
       this.cariEdit.Apikey = this.editApikey;
       this.cariEdit.USERCODE = this.editUserID;
+      this.cariEdit.FRID = this.editFRID;
       await resourceApi.setTable("scari", { ...this.cariEdit });
       this.getCariList();
     },
     //Sil
-    musteriKaldir() {
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      let _frID = this.$session.get("FRID");
-      let _UserID = this.$session.get("UID");
-      this.$resource("deleteCariID.php")
-        .get({
-          CRID: this.CRID,
-          Apikey: _Apikey,
-          FRID: _frID,
-          USERCODE: _UserID,
-        })
-        .then((response) => {
-          this.sonuc = response.body;
-          this.getCariList();
-        });
+    async musteriKaldir() {
+      this.firmaParam.CRID = this.cariEdit.CRID;
+      await resourceApi.deleteTable("scari", { ...this.firmaParam });
+      this.getCariList();
     },
-
     getfrDetail() {
       let _frID = this.$session.get("FRID");
       let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
       this.$resource("getFirmaDetail.php")
         .get({ FRID: _frID, Apikey: _Apikey })
         .then((response) => {
-          let _VergIL = response.body.data[0]["FRIL"];
-          this.$store.dispatch("actSetVergIL", _VergIL);
-        });
-    },
-    getIlceler(_ID) {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getSehirIlceler.php")
-        .get({ FRID: _frID, Apikey: _Apikey, ID: _ID })
-        .then((response) => {
-          this.ilceler = response.body.data;
+          this.VergIL = response.body.data[0]["FRIL"];
         });
     },
     getSehirler() {
@@ -550,51 +516,52 @@ export default {
           this.sehirler = response.body.data;
         });
     },
-
-    vergiDairesiModal() {
-      this.getvergidairelerFind(this.VergIL, this.VergILCE);
+    getIlceler(_ID) {
+      let _frID = this.$session.get("FRID");
+      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
+      this.$resource("getSehirIlceler.php")
+        .get({ FRID: _frID, Apikey: _Apikey, ID: _ID })
+        .then((response) => {
+          this.ilceler = response.body.data;
+        });
     },
     VergiDairesiSec(vergi) {
       const _vergi = [];
       _vergi.push(vergi);
-      this.$store.dispatch("actSetVd", _vergi);
+      this.vergidLer = _vergi;
+      this.cariEdit.CRVERGD = _vergi[0].KODU;
     },
-    getvergidaireler(_IL, _ILCE, _KODU) {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getvergidaireList.php")
-        .get({
-          FRID: _frID,
-          Apikey: _Apikey,
-          IL: _IL,
-          ILCE: _ILCE,
-          KODU: _KODU,
-        })
-        .then((response) => {
-          const _vergidLer = response.body.data;
-          this.$store.dispatch("actSetVd", _vergidLer);
-        });
+    vergiDairesiModal() {
+      this.getvergidairelerFind(this.VergIL, this.VergILCE);
     },
-    getvergidairelerFind(_IL, _ILCE) {
-      let _frID = this.$session.get("FRID");
-      let _Apikey = "8e86b685-88e6-11ea-943a-000c292fbb99";
-      this.$resource("getvergidaireList.php")
-        .get({ FRID: _frID, Apikey: _Apikey, IL: _IL, ILCE: _ILCE })
-        .then((response) => {
-          const _vergidLerFind = response.body.data;
-          this.$store.dispatch("actSetVdFind", _vergidLerFind);
-        });
+    async getvergidairelerFind(_IL, _ILCE) {
+      this.firmaParam.MUTNAME = "SET_VERGIDLIST"; //mutation name
+      this.firmaParam.IL = _IL;
+      this.firmaParam.ILCE = _ILCE;
+      this.firmaParam.KODU = "";
+      await resourceApi.getTable("xvergidaire", { ...this.firmaParam });
+    },
+    async getvergidaire(_IL, _ILCE, _KODU) {
+      this.firmaParam.MUTNAME = "SET_VERGIDEDIT"; //mutation name
+      this.firmaParam.IL = _IL;
+      this.firmaParam.ILCE = _ILCE;
+      this.firmaParam.KODU = _KODU;
+      await resourceApi.getTableID("xvergidaire", { ...this.firmaParam });
+      const _vergi = [];
+      _vergi.push(this.vergidLer);
+      this.vergidLer = _vergi;
     },
   },
   computed: {
     ...mapState({
-      vergidLer: (state) => state.vergidLer,
+      //vergidLer: (state) => state.vergidLer,
     }),
     ...mapFields([
       "AramaParam",
       "firmaParam",
       "cariList",
       "cariEdit",
+      "cariEdit.CRSEHIR",
       "editApikey",
       "editFRID",
       "editUserID",

@@ -33,6 +33,7 @@ export default {
     if (_tbl === "sfatmast") _php = "getSfatmastList.php";
     if (_tbl === "sfatdet") _php = "getSfatdetList.php";
     if (_tbl === "scari") _php = "getScariList.php";
+    if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
     ////
     await this.getData(params, _php, "Liste");
   },
@@ -42,6 +43,7 @@ export default {
     if (_tbl === "sfatmast") _php = "getSfatmastID.php";
     if (_tbl === "sfatdet") _php = "getSfatdetID.php";
     if (_tbl === "scari") _php = "getScariID.php";
+    if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
     ////
     await this.getData(params, _php, "Edit");
   },
@@ -61,7 +63,7 @@ export default {
     //sql table için php karşılıkları silmek için.
     if (_tbl === "sfatmast") _php = "deleteSfatmast.php";
     if (_tbl === "sfatdet") _php = "deleteSfatdet.php";
-    if (_tbl === "scari") _php = "deleteCariID.php";
+    if (_tbl === "scari") _php = "deleteScari.php";
     ////
     await this.setData(params, _php);
   },

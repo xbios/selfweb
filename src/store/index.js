@@ -147,20 +147,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    actSetVdFind(context, vd) {
-      context.commit("SET_VERGIDAIREFIND", vd);
-    },
-    actSetVd(context, vd) {
-      context.commit("SET_VERGIDAIRE", vd);
-      context.commit("SET_CARIEDIT_VD", vd[0].KODU);
-    },
-    actSetVergIL(context, il) {
-      context.commit("SET_VERGIL", il);
-    },
-
-    actSetCariEdit(context, cari) {
-      context.commit("SET_CARIEDIT", cari);
-    },
     actSetStokEdit(context, stok) {
       context.commit("SET_STOKEDIT", stok);
     },
@@ -185,6 +171,8 @@ export default new Vuex.Store({
       if (_mut === "SET_FATDETEDIT") state.fatdetEdit = respData;
       if (_mut === "SET_CARILIST") state.cariList = respData;
       if (_mut === "SET_CARIEDIT") state.cariEdit = respData;
+      if (_mut === "SET_VERGIDLIST") state.vergidLerFind = respData;
+      if (_mut === "SET_VERGIDEDIT") state.vergidLer = respData;
     },
     SET_COMBO(state, respData) {
       const _mut = state.comboParam.MUTNAME;
@@ -192,24 +180,6 @@ export default new Vuex.Store({
       if (_mut === "SET_CARICOMBO") state.scariCombo = respData;
     },
 
-    //
-    SET_VERGIDAIREFIND(state, vd) {
-      state.vergidLerFind = vd;
-    },
-    SET_VERGIDAIRE(state, vd) {
-      state.vergidLer = vd;
-      //state.cariEdit.CRVERGD = vd[0].KODU;
-    },
-    SET_CARIEDIT_VD(state, vd_kodu) {
-      state.cariEdit.CRVERGD = vd_kodu;
-    },
-    SET_VERGIL(state, il) {
-      state.VergIL = il;
-    },
-
-    SET_CARIEDIT(state, cari) {
-      state.cariEdit = cari;
-    },
     SET_STOKEDIT(state, stok) {
       state.stokEdit = stok;
     },
