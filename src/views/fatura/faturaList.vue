@@ -181,11 +181,20 @@ export default {
       this.firmaParam.MUTNAME = "SET_FATMASTEDIT";
       this.firmaParam.SFATMASTID = _ID;
       await resourceApi.getTableID("sfatmast", { ...this.firmaParam });
+      this.getCariCombo();
 
       //sfatdet
       this.firmaParam.MUTNAME = "SET_FATDETLIST";
       this.firmaParam.FTID = _ID;
       await resourceApi.getTable("sfatdet", { ...this.firmaParam });
+    },
+    async getCariCombo() {
+      this.comboParam.VALUE = "CRID";
+      this.comboParam.TEXT = "CRISIM";
+      this.comboParam.TABLE = "scari";
+      this.comboParam.SECIM = this.fatmastEdit.FTCRID;
+      this.comboParam.MUTNAME = "SET_CARICOMBO";
+      await resourceApi.getCombo({ ...this.comboParam });
     },
   },
   computed: {
@@ -196,7 +205,9 @@ export default {
       //
       "AramaParam",
       "firmaParam",
+      "comboParam",
       "fatmastList",
+      "fatmastEdit",
     ]),
   },
 };

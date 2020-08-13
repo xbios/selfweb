@@ -106,6 +106,20 @@ export default {
         console.log(error);
       });
   },
+  //php
+  async getSecim(params) {
+    //b-form-select  combobox için  [{value: "1", text: "İSMAİL KILBÜKER"},  şeklinde
+    await Vue.resource("getValueText.php")
+      .get({
+        ...params
+      })
+      .then(response => {
+        store.dispatch("actSetSecim", response.body.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
 
   ///////////////////////// ÖRNEKLER
   getUser() {

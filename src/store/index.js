@@ -46,6 +46,19 @@ export default new Vuex.Store({
     scariCombo: [],
     anaGrupCombo: [],
     altGrupCombo: [],
+    secimData: [],
+
+    secimParam: {
+      Apikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
+      FRID: "1",
+      VALUE: "",
+      TEXT: "",
+      TABLE: "",
+      SECIM: "",
+      MUTNAME: "",
+      searchKodu: "",
+      searchAdi: ""
+    },
 
     AramaParam: {
       searchBelge: "",
@@ -167,16 +180,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    actSetStokEdit(context, stok) {
-      context.commit("SET_STOKEDIT", stok);
-    },
-
-    //////
     actSetData(context, respData) {
       context.commit("SET_DATA", respData);
     },
     actSetCombo(context, respData) {
       context.commit("SET_COMBO", respData);
+    },
+    actSetSecim(context, respData) {
+      context.commit("SET_SECIM", respData);
     }
   },
   mutations: {
@@ -191,7 +202,6 @@ export default new Vuex.Store({
       if (_mut === "SET_FATDETEDIT") state.fatdetEdit = respData;
       if (_mut === "SET_CARILIST") state.cariList = respData;
       if (_mut === "SET_CARIEDIT") state.cariEdit = respData;
-
       if (_mut === "SET_STOKLIST") state.stokList = respData;
       if (_mut === "SET_STOKEDIT") state.stokEdit = respData;
 
@@ -211,12 +221,14 @@ export default new Vuex.Store({
       const _mut = state.comboParam.MUTNAME;
       //mutation name ile değişken eşleşmesi.
       if (_mut === "SET_CARICOMBO") state.scariCombo = respData;
+
       if (_mut === "SET_ANAGRUPCOMBO") state.anaGrupCombo = respData;
       if (_mut === "SET_ALTGRUPCOMBO") state.altGrupCombo = respData;
     },
-
-    SET_STOKEDIT(state, stok) {
-      state.stokEdit = stok;
+    SET_SECIM(state, respData) {
+      const _mut = state.secimParam.MUTNAME;
+      //mutation name ile değişken eşleşmesi.
+      if (_mut === "SET_SECIM") state.secimData = respData;
     },
 
     // Sets the layout, useful for setting different layouts (under layouts/variations/)

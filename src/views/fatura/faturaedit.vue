@@ -67,6 +67,18 @@
             ></b-form-select>
           </div>
 
+          <div class="col-md-1 mb-4">
+            <label class="text-primary col-md-12">&nbsp;</label>
+            <b-button
+              variant="primary"
+              size="sm"
+              v-b-modal.modal-block-secim
+              @click="CariSecimListeModal()"
+            >
+              <i class="fa fa-search mr-1"></i>
+            </b-button>
+          </div>
+
           <div class="form-check form-check-inline">
             <input
               class="form-check-input"
@@ -129,6 +141,12 @@
     <!-- Begin detay Table -->
     <faturadetayList />
     <!-- End detay Table -->
+
+    <!-- Begin Modal secimListe -->
+    <b-modal id="modal-block-secim" body-class="p-0" centered hide-footer hide-header>
+      <secimListe viewName="fatmastEdit.FTCRID" secimCaption="Cari Hesaplar" />
+    </b-modal>
+    <!-- End Modal secimListe -->
   </div>
 </template>
 
@@ -137,6 +155,7 @@ import flatPickr from "vue-flatpickr-component";
 import { mapState } from "vuex";
 import { mapFields } from "vuex-map-fields";
 import faturadetayList from "@/views/fatura/faturadetayList.vue";
+import secimListe from "@/views/secim/secimListe.vue";
 
 import resourceApi from "@/api/smSelf";
 
@@ -145,6 +164,7 @@ export default {
   components: {
     flatPickr,
     faturadetayList,
+    secimListe,
   },
   data() {
     return {
@@ -154,18 +174,8 @@ export default {
       alertMessage: null,
     };
   },
-  created() {
-    this.getCariCombo();
-  },
+  created() {},
   methods: {
-    async getCariCombo() {
-      this.comboParam.VALUE = "CRID";
-      this.comboParam.TEXT = "CRISIM";
-      this.comboParam.TABLE = "scari";
-      this.comboParam.SECIM = "";
-      this.comboParam.MUTNAME = "SET_CARICOMBO";
-      await resourceApi.getCombo({ ...this.comboParam });
-    },
     async faturaKaydet() {
       this.fatmastEdit.Apikey = this.editApikey;
       this.fatmastEdit.USERCODE = this.editUserID;
@@ -182,6 +192,14 @@ export default {
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
       await resourceApi.getTable("sfatmast", { ...this.firmaParam });
     },
+    async CariSecimListeModal() {
+      this.secimParam.VALUE = "CRID";
+      this.secimParam.TEXT = "CRISIM";
+      this.secimParam.TABLE = "scari";
+      this.secimParam.SECIM = "";
+      this.secimParam.MUTNAME = "SET_SECIM";
+      await resourceApi.getSecim({ ...this.secimParam });
+    },
   },
   computed: {
     ...mapState({
@@ -189,12 +207,15 @@ export default {
     }),
     ...mapFields([
       //
-      "AramaParam",
-      "firmaParam",
       "fatmastEdit",
-      "comboParam",
       "scariCombo",
       "FaturaTuru",
+
+      "AramaParam",
+      "firmaParam",
+      "comboParam",
+      "secimParam",
+
       "editApikey",
       "editFRID",
       "editUserID",
