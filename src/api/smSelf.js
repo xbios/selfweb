@@ -20,6 +20,8 @@ export default {
     if (_tbl === "scari") _php = "getScariList.php";
     if (_tbl === "sstok") _php = "getSstokList.php";
     if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
+
+    if (_tbl === "skambiyomaster") _php = "getSkambiyomasterList.php";
     ////
     await this.getData(params, _php, "Liste");
   },
@@ -31,6 +33,9 @@ export default {
     if (_tbl === "scari") _php = "getScariID.php";
     if (_tbl === "sstok") _php = "getSstokID.php";
     if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
+
+    if (_tbl === "skambiyomaster") _php = "getSkambiyomasterID.php";
+
     ////
     await this.getData(params, _php, "Edit");
   },

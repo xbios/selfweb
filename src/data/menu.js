@@ -128,6 +128,18 @@ export default {
       to: "/backend/fatura/faturaList"
     },
     {
+      name: "Siparis",
+      icon: "si si-users",
+      subActivePaths: "/backend/fatura/siparisList",
+      to: "/backend/fatura/siparisList"
+    },
+    {
+      name: "Sevkiyat",
+      icon: "si si-users",
+      subActivePaths: "/backend/fatura/sevkiyatList",
+      to: "/backend/fatura/sevkiyatList"
+    },
+    {
       name: "Raporlar",
       icon: "si si-layers",
       subActivePaths: "/backend/fatura",
@@ -135,6 +147,81 @@ export default {
         {
           name: "Fatura Raporu",
           to: "/backend/fatura/faturaraporu"
+        }
+      ]
+    },
+    {
+      name: "Kasa İşlemleri",
+      heading: true
+    },
+    {
+      name: "Kasa",
+      icon: "si si-users",
+      subActivePaths: "/backend/kasa/kasaHar",
+      to: "/backend/kasa/kasaHar"
+    },
+    {
+      name: "Kasa Tanım",
+      icon: "si si-users",
+      subActivePaths: "/backend/kasa/kasaList",
+      to: "/backend/kasa/kasaList"
+    },
+    {
+      name: "Raporlar",
+      icon: "si si-layers",
+      subActivePaths: "/backend/kasa",
+      sub: [
+        {
+          name: "Kasa Raporu",
+          to: "/backend/kasa/kasaraporu"
+        }
+      ]
+    },
+    {
+      name: "Banka İşlemleri",
+      heading: true
+    },
+    {
+      name: "Banka",
+      icon: "si si-users",
+      subActivePaths: "/backend/banka/bankaHar",
+      to: "/backend/banka/bankaHar"
+    },
+    {
+      name: "Banka Tanım",
+      icon: "si si-users",
+      subActivePaths: "/backend/banka/bankaList",
+      to: "/backend/banka/bankaList"
+    },
+    {
+      name: "Raporlar",
+      icon: "si si-layers",
+      subActivePaths: "/backend/banka",
+      sub: [
+        {
+          name: "Kasa Raporu",
+          to: "/backend/banka/bankaraporu"
+        }
+      ]
+    },
+    {
+      name: "Çek Senet İşlemleri",
+      heading: true
+    },
+    {
+      name: "Çek Senet",
+      icon: "si si-users",
+      subActivePaths: "/backend/ceksenet/ceksenetHar",
+      to: "/backend/ceksenet/ceksenetHar"
+    },
+    {
+      name: "Raporlar",
+      icon: "si si-layers",
+      subActivePaths: "/backend/ceksenet",
+      sub: [
+        {
+          name: "Çek Senet Raporu",
+          to: "/backend/ceksenet/ceksenetraporu"
         }
       ]
     },

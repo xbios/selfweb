@@ -31,11 +31,13 @@ export default new Vuex.Store({
     stokEdit: "",
     fatmastEdit: "",
     fatdetEdit: "",
+    kambiyoEdit: "",
 
     cariList: [],
     stokList: [],
     fatmastList: [],
     fatdetList: [],
+    kambiyoList: [],
 
     vergidLerFind: [],
     vergidLer: [],
@@ -204,6 +206,9 @@ export default new Vuex.Store({
       if (_mut === "SET_CARIEDIT") state.cariEdit = respData;
       if (_mut === "SET_STOKLIST") state.stokList = respData;
       if (_mut === "SET_STOKEDIT") state.stokEdit = respData;
+
+      if (_mut === "SET_KAMBIYOLIST") state.kambiyoList = respData;
+      if (_mut === "SET_KAMBIYOEDIT") state.kambiyoEdit = respData;
 
       if (_mut === "SET_VERGIDLIST") state.vergidLerFind = respData;
       if (_mut === "SET_VERGIDEDIT") {

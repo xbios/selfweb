@@ -40,7 +40,24 @@ const stokcariekstre = () => import("@/views/stok/stokcariekstre.vue");
 
 //Backend: Fatura
 const faturaList = () => import("@/views/fatura/faturaList.vue");
+const siparisList = () => import("@/views/pages/errors/404.vue");
+const sevkiyatList = () => import("@/views/pages/errors/404.vue");
+
 const faturaraporu = () => import("@/views/fatura/faturaraporu.vue");
+
+//Backend: Kasa
+const kasahar = () => import("@/views/kasa/kasahar.vue");
+const kasalist = () => import("@/views/kasa/kasalist.vue");
+const kasaraporu = () => import("@/views/kasa/kasaraporu.vue");
+
+//Backend: Banka
+const bankahar = () => import("@/views/banka/bankahar.vue");
+const bankalist = () => import("@/views/banka/bankalist.vue");
+const bankaraporu = () => import("@/views/banka/bankaraporu.vue");
+
+//Backend: CekSenet
+const ceksenethar = () => import("@/views/ceksenet/ceksenethar.vue");
+const ceksenetraporu = () => import("@/views/ceksenet/ceksenetraporu.vue");
 
 ////////////////////
 
@@ -464,12 +481,96 @@ export default new Router({
               component: faturaList
             },
             {
+              path: "siparisList",
+              name: "Siparişler",
+              component: siparisList
+            },
+            {
+              path: "sevkiyatList",
+              name: "Sevkiyatlar",
+              component: sevkiyatList
+            },
+            {
               path: "faturaraporu",
               name: "fatura raporu",
               component: faturaraporu
             }
           ]
         },
+        {
+          path: "kasa",
+          redirect: "/kasa/kasahar",
+          component: {
+            render(c) {
+              return c("router-view");
+            }
+          },
+          children: [
+            {
+              path: "kasahar",
+              name: "KasaHareket",
+              component: kasahar
+            },
+            {
+              path: "kasalist",
+              name: "kasalar",
+              component: kasalist
+            },
+            {
+              path: "kasaraporu",
+              name: "kasa raporu",
+              component: kasaraporu
+            }
+          ]
+        },
+        {
+          path: "banka",
+          redirect: "/banka/bankahar",
+          component: {
+            render(c) {
+              return c("router-view");
+            }
+          },
+          children: [
+            {
+              path: "bankahar",
+              name: "BankaHareket",
+              component: bankahar
+            },
+            {
+              path: "bankalist",
+              name: "bankalar",
+              component: bankalist
+            },
+            {
+              path: "bankaraporu",
+              name: "banka raporu",
+              component: bankaraporu
+            }
+          ]
+        },
+        {
+          path: "ceksenet",
+          redirect: "/ceksenet/ceksenethar",
+          component: {
+            render(c) {
+              return c("router-view");
+            }
+          },
+          children: [
+            {
+              path: "ceksenethar",
+              name: "ceksenetHareket",
+              component: ceksenethar
+            },
+            {
+              path: "ceksenetraporu",
+              name: "ceksenet raporu",
+              component: ceksenetraporu
+            }
+          ]
+        },
+
         ////////////////////////////
         {
           path: "blocks",
