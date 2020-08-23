@@ -31,13 +31,15 @@ export default new Vuex.Store({
     stokEdit: "",
     fatmastEdit: "",
     fatdetEdit: "",
-    kambiyoEdit: "",
+    kambiyoMasterEdit: "",
+    kambiyoDetayEdit: "",
 
     cariList: [],
     stokList: [],
     fatmastList: [],
     fatdetList: [],
-    kambiyoList: [],
+    kambiyoMasterList: [],
+    kambiyoDetayList: [],
 
     vergidLerFind: [],
     vergidLer: [],
@@ -121,6 +123,16 @@ export default new Vuex.Store({
       { value: 1, text: "1" },
       { value: 2, text: "8" },
       { value: 3, text: "18" }
+    ],
+
+    tip_id: [
+      { value: null, text: "Seçiniz" },
+      { value: 1, text: "Çek Giriş" },
+      { value: 2, text: "Senet Giriş" },
+      { value: 3, text: "Çek Çıkış C/HS" },
+      { value: 4, text: "Senet Çıkış C/HS" },
+      { value: 5, text: "Çek Çıkış Banka" },
+      { value: 6, text: "Senet Çıkış Banka" }
     ],
 
     // App vital details
@@ -207,8 +219,11 @@ export default new Vuex.Store({
       if (_mut === "SET_STOKLIST") state.stokList = respData;
       if (_mut === "SET_STOKEDIT") state.stokEdit = respData;
 
-      if (_mut === "SET_KAMBIYOLIST") state.kambiyoList = respData;
-      if (_mut === "SET_KAMBIYOEDIT") state.kambiyoEdit = respData;
+      if (_mut === "SET_KAMBIYOMASTLIST") state.kambiyoMasterList = respData;
+      if (_mut === "SET_KAMBIYOMASTEDIT") state.kambiyoMasterEdit = respData;
+
+      if (_mut === "SET_KAMBIYODETLIST") state.kambiyoDetayList = respData;
+      if (_mut === "SET_KAMBIYODETEDIT") state.kambiyoDetayEdit = respData;
 
       if (_mut === "SET_VERGIDLIST") state.vergidLerFind = respData;
       if (_mut === "SET_VERGIDEDIT") {

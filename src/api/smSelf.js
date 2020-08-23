@@ -22,6 +22,7 @@ export default {
     if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
 
     if (_tbl === "skambiyomaster") _php = "getSkambiyomasterList.php";
+    if (_tbl === "skambiyo") _php = "getSkambiyoList.php";
     ////
     await this.getData(params, _php, "Liste");
   },
@@ -35,7 +36,7 @@ export default {
     if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
 
     if (_tbl === "skambiyomaster") _php = "getSkambiyomasterID.php";
-
+    if (_tbl === "skambiyo") _php = "getSkambiyoID.php";
     ////
     await this.getData(params, _php, "Edit");
   },

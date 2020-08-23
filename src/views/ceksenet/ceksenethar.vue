@@ -86,7 +86,7 @@
             </b-tr>
           </b-thead>
           <b-tbody>
-            <b-tr v-for="kambiyo in kambiyoList" :key="kambiyo.kam_id">
+            <b-tr v-for="kambiyo in kambiyoMasterList" :key="kambiyo.kam_id">
               <b-td>{{ kambiyo.kam_id }}</b-td>
               <b-td>{{ kambiyo.tip_id }}</b-td>
               <b-td>{{ kambiyo.TARIHVADE }}</b-td>
@@ -154,7 +154,7 @@ export default {
   methods: {
     async getList() {
       //sfatmast
-      this.firmaParam.MUTNAME = "SET_KAMBIYOLIST"; //mutation name
+      this.firmaParam.MUTNAME = "SET_KAMBIYOMASTLIST"; //mutation name
       this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
       this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
@@ -162,22 +162,24 @@ export default {
       await resourceApi.getTable("skambiyomaster", { ...this.firmaParam });
     },
     async getModal(_ID) {
-      //sfatmast
-      this.firmaParam.MUTNAME = "SET_KAMBIYOEDIT";
-      this.firmaParam.SFATMASTID = _ID;
+      //skambiyomaster
+      this.firmaParam.MUTNAME = "SET_KAMBIYOMASTEDIT";
+      this.firmaParam.kam_id = _ID;
+      this.firmaParam.carbor_id = "";
       await resourceApi.getTableID("skambiyomaster", { ...this.firmaParam });
       this.getCariCombo();
 
-      //sfatdet
+      //skambiyo
       this.firmaParam.MUTNAME = "SET_KAMBIYODETLIST";
-      this.firmaParam.FTID = _ID;
+      this.firmaParam.kam_id = "";
+      this.firmaParam.carbor_id = this.kambiyoMasterEdit.kam_id;
       await resourceApi.getTable("skambiyo", { ...this.firmaParam });
     },
     async getCariCombo() {
       this.comboParam.VALUE = "CRID";
       this.comboParam.TEXT = "CRISIM";
       this.comboParam.TABLE = "scari";
-      this.comboParam.SECIM = this.kambiyoEdit.carbor_id;
+      this.comboParam.SECIM = this.kambiyoMasterEdit.cari_id;
       this.comboParam.MUTNAME = "SET_CARICOMBO";
       await resourceApi.getCombo({ ...this.comboParam });
     },
@@ -185,8 +187,8 @@ export default {
   computed: {
     ...mapFields([
       //
-      "kambiyoList",
-      "kambiyoEdit",
+      "kambiyoMasterList",
+      "kambiyoMasterEdit",
       "firmaParam",
       "AramaParam",
       "comboParam",

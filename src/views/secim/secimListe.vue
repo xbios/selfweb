@@ -109,6 +109,10 @@ export default {
         this.scariCombo.push(secim);
         this.fatmastEdit.FTCRID = secim.value;
       }
+      if (this.viewName == "kambiyoMasterEdit.cari_id") {
+        this.scariCombo.push(secim);
+        this.kambiyoMasterEdit.cari_id = secim.value;
+      }
     },
     async SecimListe() {
       this.secimParam.SECIM = this.secimParam.searchKodu;
@@ -125,6 +129,7 @@ export default {
       "secimData",
 
       "fatmastEdit",
+      "kambiyoMasterEdit",
       "scariCombo",
 
       "editApikey",
