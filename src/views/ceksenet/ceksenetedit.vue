@@ -38,11 +38,11 @@
             />
           </div>
           <div class="col-md-4 mb-4">
-            <label class="text-primary" for="FTTARIH">Tarih</label>
+            <label class="text-primary" for="TARIHVADE">Tarih</label>
             <flat-pickr
               :config="configCustom"
               class="form-control"
-              id="FTTARIH"
+              id="TARIHVADE"
               placeholder="YYYY-AA-GG"
               v-model="kambiyoMasterEdit.TARIHVADE"
             ></flat-pickr>
@@ -89,7 +89,7 @@
               false-value="0"
               v-model="kambiyoMasterEdit.islem"
             />
-            <label class="form-check-label" for="inlineCheckbox1">Kapalı</label>
+            <label class="form-check-label" for="inlineCheckbox1">İşlem Gördü</label>
           </div>
         </form>
       </div>
@@ -98,7 +98,7 @@
         <b-button
           variant="primary"
           size="sm"
-          @click="$bvModal.hide('modal-block-vcenter'), Duzenle()"
+          @click="$bvModal.hide('modal-block-vcenter'), Kaydet()"
         >
           <i class="fa fa-check mr-1"></i> Kaydet
         </b-button>
@@ -142,6 +142,23 @@ export default {
     };
   },
   methods: {
+    async Kaydet() {
+      this.kambiyoMasterEdit.Apikey = this.editApikey;
+      this.kambiyoMasterEdit.USERCODE = this.editUserID;
+      this.kambiyoMasterEdit.FRID = this.editFRID;
+      await resourceApi.setTable("skambiyomaster", {
+        ...this.kambiyoMasterEdit,
+      });
+      this.getList();
+    },
+    async getList() {
+      this.firmaParam.MUTNAME = "SET_KAMBIYOMASTLIST"; //mutation name
+      this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
+      this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
+      this.firmaParam.FTCRID = this.AramaParam.searchCari;
+      this.firmaParam.USERCODE = this.AramaParam.searchUser;
+      await resourceApi.getTable("skambiyomaster", { ...this.firmaParam });
+    },
     async CariSecimListeModal() {
       this.secimParam.VALUE = "CRID";
       this.secimParam.TEXT = "CRISIM";
@@ -171,5 +188,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss">
+// Flatpickr + Custom overrides
+@import "~flatpickr/dist/flatpickr.css";
+@import "./src/assets/scss/vendor/flatpickr";
 </style>

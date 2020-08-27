@@ -20,6 +20,9 @@
           <b-tr class="text-primary">
             <b-th>Bordro No</b-th>
             <b-th>Çek Kayıt No</b-th>
+            <b-th>Çek Tarih</b-th>
+            <b-th>Banka</b-th>
+            <b-th>Çek No</b-th>
             <b-th>İşlem</b-th>
             <b-th>Bağlantı</b-th>
             <b-th class="text-right">Borç</b-th>
@@ -32,6 +35,10 @@
           <b-tr v-for="kambiyoDetay in kambiyoDetayList" :key="kambiyoDetay.cek_id">
             <b-td>{{ kambiyoDetay.carbor_id }}</b-td>
             <b-td>{{ kambiyoDetay.cek_id }}</b-td>
+            <b-td>{{ kambiyoDetay.TARIHVADE }}</b-td>
+            <b-td>{{ kambiyoDetay.ACIKLAMABANKA }}</b-td>
+            <b-td>{{ kambiyoDetay.CEKNO }}</b-td>
+
             <b-td>{{ kambiyoDetay.islem }}</b-td>
             <b-td>{{ kambiyoDetay.bag_id }}</b-td>
             <b-td class="text-right">{{ kambiyoDetay.TUTARB }}</b-td>
@@ -66,6 +73,9 @@
             <b-th></b-th>
             <b-th></b-th>
             <b-th></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
             <b-th class="text-right text-primary">{{formatPrice(_FIYATSUM)}}</b-th>
             <b-th class="text-right text-primary">{{formatPrice(_TUTARSUM)}}</b-th>
             <b-th></b-th>
@@ -85,7 +95,7 @@
 
 <script>
 import { mapFields } from "vuex-map-fields";
-// import resourceApi from "@/api/smSelf";
+import resourceApi from "@/api/smSelf";
 
 import ceksenetdetayEdit from "@/views/ceksenet/ceksenetdetayEdit.vue";
 
@@ -107,6 +117,12 @@ export default {
         let val = (value / 1).toFixed(2).replace(".", ",");
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       }
+    },
+    async getModal(_ID) {
+      //sfatdet
+      this.firmaParam.MUTNAME = "SET_KAMBIYODETEDIT";
+      this.firmaParam.cek_id = _ID;
+      await resourceApi.getTableID("skambiyo", { ...this.firmaParam });
     },
   },
   computed: {

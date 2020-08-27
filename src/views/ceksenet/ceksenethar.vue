@@ -34,7 +34,7 @@
               type="text"
               class="form-control col-12"
               placeholder="Çek / Senete ait Bordro No bilgisi..."
-              v-model="AramaParam.searchName"
+              v-model="AramaParam.searchBelge"
               @keyup.enter="getList()"
             />
           </div>
@@ -88,9 +88,9 @@
           <b-tbody>
             <b-tr v-for="kambiyo in kambiyoMasterList" :key="kambiyo.kam_id">
               <b-td>{{ kambiyo.kam_id }}</b-td>
-              <b-td>{{ kambiyo.tip_id }}</b-td>
+              <b-td>{{ kambiyo.tip_id2 }}</b-td>
               <b-td>{{ kambiyo.TARIHVADE }}</b-td>
-              <b-td>{{ kambiyo.cari_id }}</b-td>
+              <b-td>{{ kambiyo.CRISIM }}</b-td>
               <b-td>{{ kambiyo.TUTARB }}</b-td>
               <b-td>{{ kambiyo.TUTAR }}</b-td>
               <b-td class="text-center">
@@ -155,7 +155,7 @@ export default {
     async getList() {
       //sfatmast
       this.firmaParam.MUTNAME = "SET_KAMBIYOMASTLIST"; //mutation name
-      this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
+      this.firmaParam.BELNO = this.AramaParam.searchBelge;
       this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
@@ -172,7 +172,7 @@ export default {
       //skambiyo
       this.firmaParam.MUTNAME = "SET_KAMBIYODETLIST";
       this.firmaParam.kam_id = "";
-      this.firmaParam.carbor_id = this.kambiyoMasterEdit.kam_id;
+      this.firmaParam.carbor_id = _ID;
       await resourceApi.getTable("skambiyo", { ...this.firmaParam });
     },
     async getCariCombo() {

@@ -48,6 +48,9 @@ export default {
     if (_tbl === "sfatdet") _php = "editSfatdet.php";
     if (_tbl === "scari") _php = "editScari.php";
     if (_tbl === "sstok") _php = "editSstok.php";
+
+    if (_tbl === "skambiyomaster") _php = "editSkambiyomaster.php";
+    if (_tbl === "skambiyo") _php = "editSkambiyo.php";
     ////
     await this.setData(params, _php);
   },
