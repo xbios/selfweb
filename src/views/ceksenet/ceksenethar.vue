@@ -5,7 +5,7 @@
     <!-- END Hero -->
     <!-- Page Content -->
     <div class="content">
-      <!-- Full Table -->
+      <!-- CEKSENET BORDRO LISTE Full Table -->
       <base-block title>
         <div class="col-lg-12 alert alert-info" v-if="alertDiv">{{ alertMessage }}</div>
         <p class="text-right">
@@ -19,6 +19,7 @@
             <i class="si si-plus"></i>
           </button>
         </p>
+        <!-- ARAMA FORM -->
         <div class="form-row mb-3">
           <div class="col-12 mb-3">
             <b-alert show dismissible variant="primary">
@@ -73,6 +74,7 @@
             <button type="button" @click="getsmmList()" class="btn btn-primary col-md-12">Listele</button>
           </div>-->
         </div>
+        <!-- ARAMA FORM -->
         <b-table-simple responsive striped table-class="table-vcenter">
           <b-thead>
             <b-tr class="text-primary">
@@ -117,13 +119,15 @@
           </b-tbody>
         </b-table-simple>
       </base-block>
-      <!-- END Full Table -->
+      <!-- CEKSENET BORDRO LISTE Full Table -->
 
-      <!-- Begin Modal -->
+      <!-- CEKSENET BORDRO EDIT Begin Modal -->
       <b-modal id="modal-block-vcenter" size="xl" body-class="p-0" centered hide-footer hide-header>
         <ceksenetedit />
       </b-modal>
-      <!-- End Modal -->
+      <!-- CEKSENET BORDRO EDIT End Modal -->
+
+      <!--  -->
     </div>
     <!-- END Page Content -->
   </div>

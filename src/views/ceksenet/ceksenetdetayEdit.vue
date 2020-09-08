@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Begin Modal block-->
+    <!-- CEKSENET DETAY EDIT Begin Modal block-->
     <div class="block block-themed block-transparent mb-0">
       <div class="block-header bg-secondery-dark">
         <h3 class="block-title">Çek Senet Satırı</h3>
@@ -15,6 +15,7 @@
         </div>
       </div>
       <div class="block-content font-size-sm">
+        <!-- FORM -->
         <div class="form-row">
           <div class="col-md-4 mb-4">
             <label class="text-primary" for="cek_id">Çek No</label>
@@ -37,6 +38,7 @@
             ></flat-pickr>
           </div>
         </div>
+        <!-- FORM -->
       </div>
       <div class="block-content block-content-full text-right border-top">
         <b-button variant="light" size="sm" @click="$bvModal.hide('modal-block-vcenter2')">Vazgeç</b-button>
@@ -49,7 +51,7 @@
         </b-button>
       </div>
     </div>
-    <!-- End Modal block-->
+    <!-- CEKSENET DETAY EDIT End Modal block-->
   </div>
 </template>
 
@@ -67,6 +69,8 @@ export default {
   },
   data() {
     return {
+      configCustom: { dateFormat: "Y-m-d" },
+
       sonuc: "",
       alertDiv: null,
       alertMessage: null,

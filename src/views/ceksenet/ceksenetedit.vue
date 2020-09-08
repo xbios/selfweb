@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Begin Modal block-->
+    <!-- CEKSENET BORDRO EDIT Begin Modal block-->
     <div class="block block-themed block-transparent mb-0">
       <div class="block-header bg-primary-dark">
         <h3 class="block-title">Çek Senet Düzenleme</h3>
@@ -15,8 +15,7 @@
         </div>
       </div>
       <div class="block-content font-size-sm">
-        <!--  <div class="form-row">   </div>-->
-
+        <!-- FORM -->
         <form class="form-row">
           <div class="col-md-4 mb-4">
             <label class="text-primary">Bordro Türü</label>
@@ -92,6 +91,7 @@
             <label class="form-check-label" for="inlineCheckbox1">İşlem Gördü</label>
           </div>
         </form>
+        <!-- FORM -->
       </div>
       <div class="block-content block-content-full text-right border-top">
         <b-button variant="light" size="sm" @click="$bvModal.hide('modal-block-vcenter')">Vazgeç</b-button>
@@ -104,17 +104,17 @@
         </b-button>
       </div>
     </div>
-    <!-- End Modal block-->
+    <!-- CEKSENET BORDRO EDIT End Modal block-->
 
-    <!-- Begin detay Table -->
+    <!-- CEKSENET DETAY LIST Begin detay Table -->
     <ceksenetdetayList />
-    <!-- End detay Table -->
+    <!-- CEKSENET DETAY LIST End detay Table -->
 
-    <!-- Begin Modal secimListe -->
+    <!-- SECIM LISTE Begin Modal -->
     <b-modal id="modal-block-secim" body-class="p-0" centered hide-footer hide-header>
       <secimListe viewName="kambiyoMasterEdit.cari_id" secimCaption="Cari Hesaplar" />
     </b-modal>
-    <!-- End Modal secimListe -->
+    <!-- SECIM LISTE End Modal -->
   </div>
 </template>
 

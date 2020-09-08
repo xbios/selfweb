@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Full Table -->
+    <!-- CEKSENET DETAY LIST Full Table -->
     <base-block title>
       <div class="col-lg-12 alert alert-info" v-if="alertDiv">{{ alertMessage }}</div>
       <p class="text-right">
@@ -83,13 +83,13 @@
         </b-tfoot>
       </b-table-simple>
     </base-block>
-    <!-- END Full Table -->
+    <!-- CEKSENET DETAY LIST END Full Table -->
 
-    <!-- Begin Modal -->
+    <!-- CEKSENET DETAY EDIT Begin Modal -->
     <b-modal id="modal-block-vcenter2" size="xl" body-class="p-0" centered hide-footer hide-header>
       <ceksenetdetayEdit />
     </b-modal>
-    <!-- End Modal -->
+    <!-- CEKSENET DETAY EDIT End Modal -->
   </div>
 </template>
 
