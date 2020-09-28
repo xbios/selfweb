@@ -86,17 +86,17 @@ export default new Vuex.Store({
       FRID: "1",
       Apikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
       UserID: "999",
-      MUTNAME: ""
+      Table: "",
+      Yontem: ""
     },
 
     comboParam: {
       Apikey: "8e86b685-88e6-11ea-943a-000c292fbb99",
       FRID: "1",
+      SECIM: "",
       VALUE: "",
       TEXT: "",
-      TABLE: "",
-      SECIM: "",
-      MUTNAME: ""
+      TABLE: ""
     },
 
     FaturaTuru: [
@@ -208,47 +208,53 @@ export default new Vuex.Store({
     updateField,
 
     SET_DATA(state, respData) {
-      const _mut = state.firmaParam.MUTNAME;
+      const ynt = state.firmaParam.Yontem;
+      const _mut = state.firmaParam.Table;
+
+      console.log("ynt: " + ynt);
+      console.log("_mut: " + _mut);
+
       //mutation name ile değişken eşleşmesi.
-      if (_mut === "SET_FATMASTLIST") state.fatmastList = respData;
-      if (_mut === "SET_FATMASTEDIT") state.fatmastEdit = respData;
-      if (_mut === "SET_FATDETLIST") state.fatdetList = respData;
-      if (_mut === "SET_FATDETEDIT") state.fatdetEdit = respData;
-      if (_mut === "SET_CARILIST") state.cariList = respData;
-      if (_mut === "SET_CARIEDIT") state.cariEdit = respData;
-      if (_mut === "SET_STOKLIST") state.stokList = respData;
-      if (_mut === "SET_STOKEDIT") state.stokEdit = respData;
-
-      if (_mut === "SET_KAMBIYOMASTLIST") state.kambiyoMasterList = respData;
-      if (_mut === "SET_KAMBIYOMASTEDIT") state.kambiyoMasterEdit = respData;
-
-      if (_mut === "SET_KAMBIYODETLIST") state.kambiyoDetayList = respData;
-      if (_mut === "SET_KAMBIYODETEDIT") state.kambiyoDetayEdit = respData;
-
-      if (_mut === "SET_VERGIDLIST") state.vergidLerFind = respData;
-      if (_mut === "SET_VERGIDEDIT") {
-        state.vergidLer = respData;
-        state.vergidLer.push({
-          ADI: "Lütfen Vergi Dairesi seçimi yapınız",
-          ID: "0",
-          IL: "",
-          ILCE: "",
-          KODU: "0"
-        });
+      if (ynt === "Liste") {
+        if (_mut === "SET_FATMASTLIST") state.fatmastList = respData;
+        if (_mut === "SET_FATDETLIST") state.fatdetList = respData;
+        if (_mut === "SET_CARILIST") state.cariList = respData;
+        if (_mut === "SET_STOKLIST") state.stokList = respData;
+        if (_mut === "skambiyomaster") state.kambiyoMasterList = respData;
+        if (_mut === "skambiyo") state.kambiyoDetayList = respData;
+        if (_mut === "SET_VERGIDLIST") state.vergidLerFind = respData;
+      }
+      if (ynt === "Edit") {
+        if (_mut === "SET_FATMASTEDIT") state.fatmastEdit = respData;
+        if (_mut === "SET_FATDETEDIT") state.fatdetEdit = respData;
+        if (_mut === "SET_CARIEDIT") state.cariEdit = respData;
+        if (_mut === "SET_STOKEDIT") state.stokEdit = respData;
+        if (_mut === "skambiyomaster") state.kambiyoMasterEdit = respData;
+        if (_mut === "skambiyo") state.kambiyoDetayEdit = respData;
+        if (_mut === "SET_VERGIDEDIT") {
+          state.vergidLer = respData;
+          state.vergidLer.push({
+            ADI: "Lütfen Vergi Dairesi seçimi yapınız",
+            ID: "0",
+            IL: "",
+            ILCE: "",
+            KODU: "0"
+          });
+        }
       }
     },
     SET_COMBO(state, respData) {
-      const _mut = state.comboParam.MUTNAME;
+      const _mut = state.comboParam.TABLE;
       //mutation name ile değişken eşleşmesi.
-      if (_mut === "SET_CARICOMBO") state.scariCombo = respData;
+      if (_mut === "scari") state.scariCombo = respData;
 
       if (_mut === "SET_ANAGRUPCOMBO") state.anaGrupCombo = respData;
       if (_mut === "SET_ALTGRUPCOMBO") state.altGrupCombo = respData;
     },
     SET_SECIM(state, respData) {
-      const _mut = state.secimParam.MUTNAME;
+      const _mut = state.secimParam.TABLE;
       //mutation name ile değişken eşleşmesi.
-      if (_mut === "SET_SECIM") state.secimData = respData;
+      if (_mut === "scari") state.secimData = respData;
     },
 
     // Sets the layout, useful for setting different layouts (under layouts/variations/)

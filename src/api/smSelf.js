@@ -13,30 +13,30 @@ import store from "../store";
 
 export default {
   //php
-  async getTable(_tbl, params) {
+  async getTable(params) {
     //sql table için php karşılıkları liste için
-    if (_tbl === "sfatmast") _php = "getSfatmastList.php";
-    if (_tbl === "sfatdet") _php = "getSfatdetList.php";
-    if (_tbl === "scari") _php = "getScariList.php";
-    if (_tbl === "sstok") _php = "getSstokList.php";
-    if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
+    if (params.Table === "sfatmast") _php = "getSfatmastList.php";
+    if (params.Table === "sfatdet") _php = "getSfatdetList.php";
+    if (params.Table === "scari") _php = "getScariList.php";
+    if (params.Table === "sstok") _php = "getSstokList.php";
+    if (params.Table === "xvergidaire") _php = "getvergidaireList.php";
 
-    if (_tbl === "skambiyomaster") _php = "getSkambiyomasterList.php";
-    if (_tbl === "skambiyo") _php = "getSkambiyoList.php";
+    if (params.Table === "skambiyomaster") _php = "getSkambiyomasterList.php";
+    if (params.Table === "skambiyo") _php = "getSkambiyoList.php";
     ////
     await this.getData(params, _php, "Liste");
   },
   //php
-  async getTableID(_tbl, params) {
+  async getTableID(params) {
     //sql table için php karşılıkları tek kayıt için
-    if (_tbl === "sfatmast") _php = "getSfatmastID.php";
-    if (_tbl === "sfatdet") _php = "getSfatdetID.php";
-    if (_tbl === "scari") _php = "getScariID.php";
-    if (_tbl === "sstok") _php = "getSstokID.php";
-    if (_tbl === "xvergidaire") _php = "getvergidaireList.php";
+    if (params.Table === "sfatmast") _php = "getSfatmastID.php";
+    if (params.Table === "sfatdet") _php = "getSfatdetID.php";
+    if (params.Table === "scari") _php = "getScariID.php";
+    if (params.Table === "sstok") _php = "getSstokID.php";
+    if (params.Table === "xvergidaire") _php = "getvergidaireList.php";
 
-    if (_tbl === "skambiyomaster") _php = "getSkambiyomasterID.php";
-    if (_tbl === "skambiyo") _php = "getSkambiyoID.php";
+    if (params.Table === "skambiyomaster") _php = "getSkambiyomasterID.php";
+    if (params.Table === "skambiyo") _php = "getSkambiyoID.php";
     ////
     await this.getData(params, _php, "Edit");
   },
@@ -67,14 +67,15 @@ export default {
   },
 
   //api vuex
-  async getData(params, _php, _ynt) {
+  async getData(params, _php) {
     await Vue.resource(_php)
       .get({
         ...params
       })
       .then(response => {
-        if (_ynt === "Liste") store.dispatch("actSetData", response.body.data);
-        if (_ynt === "Edit")
+        if (params.Yontem === "Liste")
+          store.dispatch("actSetData", response.body.data);
+        if (params.Yontem === "Edit")
           store.dispatch("actSetData", response.body.data[0]);
       })
       .catch(error => {

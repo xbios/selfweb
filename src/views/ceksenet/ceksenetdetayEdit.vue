@@ -45,7 +45,7 @@
         <b-button
           variant="primary"
           size="sm"
-          @click="$bvModal.hide('modal-block-vcenter2'), detayKaydet()"
+          @click="$bvModal.hide('modal-block-vcenter2'), BtnDetayKaydet()"
         >
           <i class="fa fa-check mr-1"></i> Kaydet
         </b-button>
@@ -77,15 +77,15 @@ export default {
     };
   },
   methods: {
-    async detayKaydet() {
+    async BtnDetayKaydet() {
       this.kambiyoDetayEdit.Apikey = this.editApikey;
       this.kambiyoDetayEdit.USERCODE = this.editUserID;
       this.kambiyoDetayEdit.FRID = this.editFRID;
       this.kambiyoDetayEdit.cek_id = this.kambiyoMasterEdit.cek_id;
       await resourceApi.setTable("skambiyo", { ...this.fatdetEdit });
-      this.getFaturadetList();
+      this.KambiyoDetayListe();
     },
-    async getFaturadetList() {
+    async KambiyoDetayListe() {
       this.firmaParam.MUTNAME = "SET_KAMBIYODETLIST";
       this.firmaParam.cek_id = this.kambiyoMasterEdit.cek_id;
       await resourceApi.getTable("skambiyo", { ...this.firmaParam });

@@ -73,7 +73,7 @@
               variant="primary"
               size="sm"
               v-b-modal.modal-block-secim
-              @click="CariSecimListeModal()"
+              @click="BtnCariListeClick()"
             >
               <i class="fa fa-search mr-1"></i>
             </b-button>
@@ -98,7 +98,7 @@
         <b-button
           variant="primary"
           size="sm"
-          @click="$bvModal.hide('modal-block-vcenter'), Kaydet()"
+          @click="$bvModal.hide('modal-block-vcenter'), BtnKaydetClick()"
         >
           <i class="fa fa-check mr-1"></i> Kaydet
         </b-button>
@@ -142,29 +142,29 @@ export default {
     };
   },
   methods: {
-    async Kaydet() {
+    async BtnKaydetClick() {
       this.kambiyoMasterEdit.Apikey = this.editApikey;
       this.kambiyoMasterEdit.USERCODE = this.editUserID;
       this.kambiyoMasterEdit.FRID = this.editFRID;
-      await resourceApi.setTable("skambiyomaster", {
+      await resourceApi.setTable("skambiyo", {
         ...this.kambiyoMasterEdit,
       });
-      this.getList();
+      this.KambiyoListe();
     },
-    async getList() {
-      this.firmaParam.MUTNAME = "SET_KAMBIYOMASTLIST"; //mutation name
+    async KambiyoListe() {
       this.firmaParam.FTBELNO = this.AramaParam.searchBelge;
       this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
-      await resourceApi.getTable("skambiyomaster", { ...this.firmaParam });
+      this.firmaParam.Table = "skambiyomaster";
+      this.firmaParam.Yontem = "Liste";
+      await resourceApi.getTable({ ...this.firmaParam });
     },
-    async CariSecimListeModal() {
+    async BtnCariListeClick() {
+      this.secimParam.SECIM = "";
       this.secimParam.VALUE = "CRID";
       this.secimParam.TEXT = "CRISIM";
       this.secimParam.TABLE = "scari";
-      this.secimParam.SECIM = "";
-      this.secimParam.MUTNAME = "SET_SECIM";
       await resourceApi.getSecim({ ...this.secimParam });
     },
   },

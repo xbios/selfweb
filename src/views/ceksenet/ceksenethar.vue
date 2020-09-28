@@ -12,7 +12,7 @@
           <button
             type="button"
             v-b-modal.modal-block-vcenter
-            @click="getModal((newSFATMASTID = -999))"
+            @click="btnDuzenleClick((newSFATMASTID = -999))"
             class="btn btn-success"
           >
             Yeni Çek / Senet
@@ -36,7 +36,7 @@
               class="form-control col-12"
               placeholder="Çek / Senete ait Bordro No bilgisi..."
               v-model="AramaParam.searchBelge"
-              @keyup.enter="getList()"
+              @keyup.enter="EditKeyupEnter()"
             />
           </div>
           <div class="col-md-3">
@@ -46,7 +46,7 @@
               class="form-control col-12"
               placeholder="Çek / Senete ait No bilgisi..."
               v-model="AramaParam.searchEmail"
-              @keyup.enter="getList()"
+              @keyup.enter="EditKeyupEnter()"
             />
           </div>
           <div class="col-md-3">
@@ -56,7 +56,7 @@
               class="form-control col-12"
               placeholder="Aranan müşteriye ait telefon bilgisi..."
               v-model="AramaParam.searchTelephone"
-              @keyup.enter="getList()"
+              @keyup.enter="EditKeyupEnter()"
             />
           </div>
           <div class="col-md-3">
@@ -66,12 +66,12 @@
               class="form-control col-12"
               placeholder="Aranan müşteriye ait şehir bilgisi..."
               v-model="AramaParam.searchCity"
-              @keyup.enter="getList()"
+              @keyup.enter="EditKeyupEnter()"
             />
           </div>
           <!--<div class="col-md-4 mb-3">
             <label class="text-primary">&nbsp;</label>
-            <button type="button" @click="getsmmList()" class="btn btn-primary col-md-12">Listele</button>
+            <button type="button" @click="" class="btn btn-primary col-md-12">Listele</button>
           </div>-->
         </div>
         <!-- ARAMA FORM -->
@@ -101,7 +101,7 @@
                   variant="alt-primary"
                   title="Düzenle"
                   v-b-modal.modal-block-vcenter
-                  @click="getModal(kambiyo.kam_id)"
+                  @click="btnDuzenleClick(kambiyo.kam_id)"
                 >
                   <i class="fa fa-fw fa-pencil-alt"></i>
                 </b-button>
@@ -110,7 +110,7 @@
                   variant="alt-danger"
                   title="Kaldır"
                   v-b-modal.modal-block-vcenter-delete
-                  @click="getModal(kambiyo.kam_id)"
+                  @click="btnDuzenleClick(kambiyo.kam_id)"
                 >
                   <i class="fa fa-minus"></i>
                 </b-button>
@@ -153,38 +153,41 @@ export default {
     };
   },
   created() {
-    this.getList();
+    this.EditKeyupEnter();
   },
   methods: {
-    async getList() {
+    async EditKeyupEnter() {
       //sfatmast
-      this.firmaParam.MUTNAME = "SET_KAMBIYOMASTLIST"; //mutation name
+      //this.firmaParam.MUTNAME = "SET_KAMBIYOMASTLIST"; //mutation name
       this.firmaParam.BELNO = this.AramaParam.searchBelge;
       this.firmaParam.FTTARIH = this.AramaParam.searchTarih;
       this.firmaParam.FTCRID = this.AramaParam.searchCari;
       this.firmaParam.USERCODE = this.AramaParam.searchUser;
-      await resourceApi.getTable("skambiyomaster", { ...this.firmaParam });
+      this.firmaParam.Table = "skambiyomaster";
+      this.firmaParam.Yontem = "Liste";
+      await resourceApi.getTable({ ...this.firmaParam });
     },
-    async getModal(_ID) {
+    async btnDuzenleClick(_ID) {
       //skambiyomaster
-      this.firmaParam.MUTNAME = "SET_KAMBIYOMASTEDIT";
       this.firmaParam.kam_id = _ID;
       this.firmaParam.carbor_id = "";
-      await resourceApi.getTableID("skambiyomaster", { ...this.firmaParam });
-      this.getCariCombo();
+      this.firmaParam.Table = "skambiyomaster";
+      this.firmaParam.Yontem = "Edit";
+      await resourceApi.getTableID({ ...this.firmaParam });
+      this.ComboCariListe();
 
       //skambiyo
-      this.firmaParam.MUTNAME = "SET_KAMBIYODETLIST";
       this.firmaParam.kam_id = "";
       this.firmaParam.carbor_id = _ID;
-      await resourceApi.getTable("skambiyo", { ...this.firmaParam });
+      this.firmaParam.Table = "skambiyo";
+      this.firmaParam.Yontem = "Liste";
+      await resourceApi.getTable({ ...this.firmaParam });
     },
-    async getCariCombo() {
+    async ComboCariListe() {
+      this.comboParam.SECIM = this.kambiyoMasterEdit.cari_id;
       this.comboParam.VALUE = "CRID";
       this.comboParam.TEXT = "CRISIM";
       this.comboParam.TABLE = "scari";
-      this.comboParam.SECIM = this.kambiyoMasterEdit.cari_id;
-      this.comboParam.MUTNAME = "SET_CARICOMBO";
       await resourceApi.getCombo({ ...this.comboParam });
     },
   },

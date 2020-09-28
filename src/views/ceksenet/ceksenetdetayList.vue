@@ -7,7 +7,7 @@
         <button
           type="button"
           v-b-modal.modal-block-vcenter2
-          @click="getModal((cek_id = -999))"
+          @click="BtnDuzenleClick((cek_id = -999))"
           class="btn btn-success"
         >
           Yeni Satır
@@ -50,7 +50,7 @@
                 variant="alt-primary"
                 title="Düzenle"
                 v-b-modal.modal-block-vcenter2
-                @click="getModal(kambiyoDetay.cek_id)"
+                @click="BtnDuzenleClick(kambiyoDetay.cek_id)"
               >
                 <i class="fa fa-fw fa-pencil-alt"></i>
               </b-button>
@@ -59,7 +59,7 @@
                 variant="alt-danger"
                 title="Kaldır"
                 v-b-modal.modal-block-vcenter-delete
-                @click="getModal(kambiyoDetay.cek_id)"
+                @click="BtnDuzenleClick(kambiyoDetay.cek_id)"
               >
                 <i class="fa fa-minus"></i>
               </b-button>
@@ -118,11 +118,11 @@ export default {
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       }
     },
-    async getModal(_ID) {
-      //sfatdet
-      this.firmaParam.MUTNAME = "SET_KAMBIYODETEDIT";
+    async BtnDuzenleClick(_ID) {
       this.firmaParam.cek_id = _ID;
-      await resourceApi.getTableID("skambiyo", { ...this.firmaParam });
+      this.firmaParam.Table = "skambiyo";
+      this.firmaParam.Yontem = "Edit";
+      await resourceApi.getTableID({ ...this.firmaParam });
     },
   },
   computed: {

@@ -70,7 +70,7 @@
           </div>
           <!--<div class="col-md-4 mb-3">
             <label class="text-primary">&nbsp;</label>
-            <button type="button" @click="getsmmList()" class="btn btn-primary col-md-12">Listele</button>
+            <button type="button" @click="" class="btn btn-primary col-md-12">Listele</button>
           </div>-->
         </div>
         <b-table-simple responsive striped table-class="table-vcenter">
