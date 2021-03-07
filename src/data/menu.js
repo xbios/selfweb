@@ -215,6 +215,12 @@ export default {
       to: "/backend/ceksenet/ceksenetHar"
     },
     {
+      name: "Çek Senet 2",
+      icon: "si si-users",
+      subActivePaths: "/backend/ceksenet/ceksenetHar2",
+      to: "/backend/ceksenet/ceksenetHar2"
+    },
+    {
       name: "Raporlar",
       icon: "si si-layers",
       subActivePaths: "/backend/ceksenet",

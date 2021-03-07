@@ -4,7 +4,9 @@
     <base-page-heading title="Page Layout" subtitle="Default">
       <template #extra>
         <b-breadcrumb class="breadcrumb-alt">
-          <b-breadcrumb-item href="javascript:void(0)">Layout</b-breadcrumb-item>
+          <b-breadcrumb-item href="javascript:void(0)"
+            >Layout</b-breadcrumb-item
+          >
           <b-breadcrumb-item href="javascript:void(0)">Page</b-breadcrumb-item>
           <b-breadcrumb-item active>Default</b-breadcrumb-item>
         </b-breadcrumb>
@@ -26,12 +28,12 @@
 
 <script>
 export default {
-  created () {
+  created() {
     // Set example settings
-    this.$store.commit('sidebarPosition', { mode: 'left' })
-    this.$store.commit('sidebar', { mode: 'open' })
-    this.$store.commit('sideOverlay', { mode: 'close' })
-    this.$store.commit('header', { mode: 'fixed' })
-  }
-}
+    this.$store.commit("sidebarPosition", { mode: "left" });
+    this.$store.commit("sidebar", { mode: "open" });
+    this.$store.commit("sideOverlay", { mode: "close" });
+    this.$store.commit("header", { mode: "fixed" });
+  },
+};
 </script>

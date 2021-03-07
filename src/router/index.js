@@ -57,6 +57,7 @@ const bankaraporu = () => import("@/views/banka/bankaraporu.vue");
 
 //Backend: CekSenet
 const ceksenethar = () => import("@/views/ceksenet/ceksenethar.vue");
+const ceksenethar2 = () => import("@/views/ceksenet/ceksenethar2.vue");
 const ceksenetraporu = () => import("@/views/ceksenet/ceksenetraporu.vue");
 
 ////////////////////
@@ -562,6 +563,11 @@ export default new Router({
               path: "ceksenethar",
               name: "ceksenetHareket",
               component: ceksenethar
+            },
+            {
+              path: "ceksenethar2",
+              name: "ceksenetHareket2",
+              component: ceksenethar2
             },
             {
               path: "ceksenetraporu",
